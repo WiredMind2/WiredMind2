@@ -5,33 +5,29 @@
    </h1>   
 </div>
 
-<div align="center" style="display: inline-flex; align-items: center; gap: 8px;">
- 
-  <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGw5aTAyeGR1OHV4amQzb2NydGxvZDE5M2J4cGV2NXVxbXZxeWRwbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/ao9DUiTKH60XS/giphy.gif" width="30">
-
+<div align="center"> 
   <h3>
+    <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeGw5aTAyeGR1OHV4amQzb2NydGxvZDE5M2J4cGV2NXVxbXZxeWRwbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/ao9DUiTKH60XS/giphy.gif" width="30">
     William Michaud | 
     CS Student @ <a href="https://www.insa-lyon.fr/">INSA Lyon</a> | 
     Lyon, France 
-  </h3>
-
   <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeDZ3cXI1dm40a2ZyOHNnNmdyMWxyNTM3Y3VhdDA0ZzdxNm1xbjlvMSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Vf3ZKdillTMOOaOho0/giphy.gif" width="30">
+  </h3>
 
 </div>
 
-<p align="center">
+<div align="center">
 
-  [![Portfolio](https://custom-icon-badges.demolab.com/badge/Tetrazero.com-My_Portfolio-555?style=flat&logo=tetrazero&labelColor=0A66C2)](https://tetrazero.com)
-  [![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-w__michaud-555?style=flat&logo=linkedin-white&logoColor=fff&labelColor=0A66C2)](https://linkedin.com/in/w-michaud)
-  ![Location](https://custom-icon-badges.demolab.com/badge/Location:-Lyon,France-555?style=flat&logo=location&labelColor=0A66C2)
-</p>
+[![Portfolio](https://custom-icon-badges.demolab.com/badge/Tetrazero.com-My_Portfolio-555?style=flat&logo=tetrazero&labelColor=0A66C2)](https://tetrazero.com)
+[![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-w__michaud-555?style=flat&logo=linkedin-white&logoColor=fff&labelColor=0A66C2)](https://linkedin.com/in/w-michaud)
+![Location](https://custom-icon-badges.demolab.com/badge/Location:-Lyon,France-555?style=flat&logo=location&labelColor=0A66C2)
+
+</div>
 
 <h5 align="center">
-  <i>Everybody should use tabs instead of spaces for indentation.</i>
+  <i>I believe that everybody should use tabs instead of spaces for indentation.</i>
 </h5>
 
-
-<br />
 <br />
 
 <div align="center">
@@ -49,7 +45,8 @@ I'm currently a fourth-year Computer Science and Engineering student at **INSA L
 
 ## Things I often use!
 
-**Languages:**  
+**Languages:**
+
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![C++](https://img.shields.io/badge/C++-00599C?style=for-the-badge&logo=cplusplus&logoColor=white)
 ![HTML](https://img.shields.io/badge/HTML-f06529?style=for-the-badge&logo=html5&logoColor=white&labelColor=f06529)
@@ -61,7 +58,8 @@ I'm currently a fourth-year Computer Science and Engineering student at **INSA L
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
 ![Jekyll](https://img.shields.io/badge/Jekyll-C00?style=for-the-badge&logo=jekyll&logoColor=fff)
 
-**Frameworks & Tools:**  
+**Frameworks & Tools:**
+
 ![React](https://img.shields.io/badge/React-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 ![Svelte](https://img.shields.io/badge/Svelte-FF3E00?style=for-the-badge&logo=svelte&logoColor=white)
@@ -81,16 +79,13 @@ I'm currently a fourth-year Computer Science and Engineering student at **INSA L
 
 <div align="center">
   <h3> My GitHub Stats </h3>
-</div>
 
-<p align="center">
   <img src="github_stats.svg" alt="GitHub Stats" />
-</p>
+</div>
 
 <br />
 
 ---
-
 
 <div align="center">
   <h3> Let's connect! </h3>
@@ -101,7 +96,7 @@ I'm currently a fourth-year Computer Science and Engineering student at **INSA L
 [![Portfolio](https://custom-icon-badges.demolab.com/badge/Tetrazero.com-My_Portfolio-555?style=for-the-badge&logo=tetrazero&labelColor=0A66C2)](https://tetrazero.com)
 [![LinkedIn](https://custom-icon-badges.demolab.com/badge/LinkedIn-w__michaud-555?style=for-the-badge&logo=linkedin-white&logoColor=fff&labelColor=0A66C2)](https://linkedin.com/in/w-michaud)
 ![Location](https://custom-icon-badges.demolab.com/badge/Location:-Lyon,France-555?style=for-the-badge&logo=location&labelColor=0A66C2)
+
 </div>
 
-
-<p align="center">I'm actively looking for internship opportunities!</p>
+<p align="center"><i>I'm actively looking for internship opportunities!</i></p>
