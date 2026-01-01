@@ -1,0 +1,147 @@
+
+<svg width="450" height="260" viewBox="0 0 450 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --stroke-color: #e1e4e8;
+            --text-color: #24292e;
+            --secondary-text-color: #586069;
+            --accent-color: #0366d6;
+            --icon-color: #586069;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0d1117;
+                --stroke-color: #30363d;
+                --text-color: #c9d1d9;
+                --secondary-text-color: #8b949e;
+                --accent-color: #58a6ff;
+                --icon-color: #8b949e;
+            }
+        }
+        
+        .bg { fill: var(--bg-color); stroke: var(--stroke-color); stroke-width: 1px; }
+        .title { font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--accent-color); }
+        .stat-label { font: 400 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--text-color); }
+        .stat-value { font: 600 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--text-color); }
+        .lang-label { font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--secondary-text-color); }
+        
+        /* Animations */
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out forwards;
+            opacity: 0; /* Start hidden */
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+        .delay-6 { animation-delay: 0.6s; }
+        .delay-7 { animation-delay: 0.7s; }
+        .delay-8 { animation-delay: 0.8s; }
+    </style>
+    
+    <rect x="0.5" y="0.5" rx="6" height="259" width="449" class="bg"/>
+    
+    <text x="25" y="35" class="title slide-in">WiredMind2's GitHub Stats</text>
+    
+    <!-- Stats Column -->
+    <g transform="translate(25, 70)">
+        <g transform="translate(0, 0)">
+            <g class="slide-in delay-1">
+                <text x="0" y="10" class="stat-label">Total Stars:</text>
+                <text x="150" y="10" class="stat-value">7</text>
+            </g>
+        </g>
+        <g transform="translate(0, 30)">
+            <g class="slide-in delay-2">
+                <text x="0" y="10" class="stat-label">Commits (Year):</text>
+                <text x="150" y="10" class="stat-value">367</text>
+            </g>
+        </g>
+        <g transform="translate(0, 60)">
+            <g class="slide-in delay-3">
+                <text x="0" y="10" class="stat-label">Total PRs:</text>
+                <text x="150" y="10" class="stat-value">23</text>
+            </g>
+        </g>
+        <g transform="translate(0, 90)">
+            <g class="slide-in delay-4">
+                <text x="0" y="10" class="stat-label">Total Issues:</text>
+                <text x="150" y="10" class="stat-value">3</text>
+            </g>
+        </g>
+        <g transform="translate(0, 120)">
+            <g class="slide-in delay-5">
+                <text x="0" y="10" class="stat-label">Contributed to:</text>
+                <text x="150" y="10" class="stat-value">2</text>
+            </g>
+        </g>
+        <g transform="translate(0, 150)">
+            <g class="slide-in delay-6">
+                <text x="0" y="10" class="stat-label">Repos Created:</text>
+                <text x="150" y="10" class="stat-value">39</text>
+            </g>
+        </g>
+    </g>
+
+    <!-- Languages Column -->
+    <g transform="translate(245.0, 70)">
+        <text x="0" y="-10" class="stat-label slide-in delay-1" style="font-weight: 600;">Top Languages</text>
+
+        <g transform="translate(0, 0)">
+            <g class="slide-in delay-2">
+                <text x="0" y="10" class="lang-label">Python</text>
+                <text x="100" y="10" class="lang-label" text-anchor="end">47.7%</text>
+                <rect x="0" y="18" width="71.60250333623411" height="6" fill="#3572A5" rx="3"/>
+            </g>
+        </g>
+    
+        <g transform="translate(0, 30)">
+            <g class="slide-in delay-3">
+                <text x="0" y="10" class="lang-label">C++</text>
+                <text x="100" y="10" class="lang-label" text-anchor="end">16.5%</text>
+                <rect x="0" y="18" width="24.769919620379056" height="6" fill="#f34b7d" rx="3"/>
+            </g>
+        </g>
+    
+        <g transform="translate(0, 60)">
+            <g class="slide-in delay-4">
+                <text x="0" y="10" class="lang-label">CSS</text>
+                <text x="100" y="10" class="lang-label" text-anchor="end">8.7%</text>
+                <rect x="0" y="18" width="13.041571620272853" height="6" fill="#663399" rx="3"/>
+            </g>
+        </g>
+    
+        <g transform="translate(0, 90)">
+            <g class="slide-in delay-5">
+                <text x="0" y="10" class="lang-label">TypeScript</text>
+                <text x="100" y="10" class="lang-label" text-anchor="end">7.0%</text>
+                <rect x="0" y="18" width="10.569821517223009" height="6" fill="#3178c6" rx="3"/>
+            </g>
+        </g>
+    
+        <g transform="translate(0, 120)">
+            <g class="slide-in delay-6">
+                <text x="0" y="10" class="lang-label">C</text>
+                <text x="100" y="10" class="lang-label" text-anchor="end">6.5%</text>
+                <rect x="0" y="18" width="9.742070575831708" height="6" fill="#555555" rx="3"/>
+            </g>
+        </g>
+    
+        <g transform="translate(0, 150)">
+            <g class="slide-in delay-7">
+                <text x="0" y="10" class="lang-label">HTML</text>
+                <text x="100" y="10" class="lang-label" text-anchor="end">4.1%</text>
+                <rect x="0" y="18" width="6.106632227227912" height="6" fill="#e34c26" rx="3"/>
+            </g>
+        </g>
+    
+    </g>
+</svg>
