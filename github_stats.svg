@@ -62,7 +62,7 @@
         <g transform="translate(0, 30)">
             <g class="slide-in delay-2">
                 <text x="0" y="10" class="stat-label">Commits (Year):</text>
-                <text x="150" y="10" class="stat-value">577</text>
+                <text x="150" y="10" class="stat-value">592</text>
             </g>
         </g>
         <g transform="translate(0, 60)">
@@ -80,7 +80,7 @@
         <g transform="translate(0, 120)">
             <g class="slide-in delay-5">
                 <text x="0" y="10" class="stat-label">Contributed to:</text>
-                <text x="150" y="10" class="stat-value">9</text>
+                <text x="150" y="10" class="stat-value">10</text>
             </g>
         </g>
         <g transform="translate(0, 150)">
