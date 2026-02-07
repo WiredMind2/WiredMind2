@@ -24,10 +24,6 @@
 
 </div>
 
-<h5 align="center">
-  <i>I believe that everybody should use tabs instead of spaces for indentation.</i>
-</h5>
-
 <br />
 
 <div align="center">
