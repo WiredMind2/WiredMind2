@@ -34,10 +34,10 @@
 
 I'm currently a fourth-year Computer Science and Engineering student at **INSA Lyon**. I also compete in a lot of national and international algorithm competitions and actively contribute to tech communities as the current President of INSAlgo.
 
-- 🌍 **ICPC competitor** (2024, 2025), ranked 3rd in France, I will soon compete with my team during the European Championship!
+- 🌍 **ICPC competitor** (2024, 2025), ranked 2nd in France, I competed in the SWERC and European Championship!
 - 🥇 **Winner of the Match'Up Coding Battle 2022** (2000+ participants)
 - 🏆 **4-time Prologin finalist** (2021-2025)
-- Making conferences and designing competition exercises for INSAlgo
+- Making conferences and designing competition exercises for **INSAlgo**
 
 ## Things I often use!
 
@@ -52,7 +52,6 @@ I'm currently a fourth-year Computer Science and Engineering student at **INSA L
 ![C#](https://custom-icon-badges.demolab.com/badge/C%23-%23239120.svg?style=for-the-badge&logo=cshrp&logoColor=white)
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![PHP](https://img.shields.io/badge/php-%23777BB4.svg?style=for-the-badge&logo=php&logoColor=white)
-![Jekyll](https://img.shields.io/badge/Jekyll-C00?style=for-the-badge&logo=jekyll&logoColor=fff)
 
 **Frameworks & Tools:**
 
@@ -64,7 +63,6 @@ I'm currently a fourth-year Computer Science and Engineering student at **INSA L
 ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-ee4c2c?style=for-the-badge&logo=pytorch&logoColor=white)
 ![OpenRouter](https://img.shields.io/badge/OpenRouter-94A3B8?style=for-the-badge&logo=openrouter&logoColor=fff)
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
 ![Visual Studio Code](https://custom-icon-badges.demolab.com/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=vsc&logoColor=white)
 ![Blender](https://img.shields.io/badge/Blender-%23F5792A.svg?style=for-the-badge&logo=blender&logoColor=white)
 ![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
