@@ -56,13 +56,13 @@
         <g transform="translate(0, 0)">
             <g class="slide-in delay-1">
                 <text x="0" y="10" class="stat-label">Total Stars:</text>
-                <text x="150" y="10" class="stat-value">7</text>
+                <text x="150" y="10" class="stat-value">9</text>
             </g>
         </g>
         <g transform="translate(0, 30)">
             <g class="slide-in delay-2">
                 <text x="0" y="10" class="stat-label">Commits (Year):</text>
-                <text x="150" y="10" class="stat-value">617</text>
+                <text x="150" y="10" class="stat-value">632</text>
             </g>
         </g>
         <g transform="translate(0, 60)">
@@ -74,7 +74,7 @@
         <g transform="translate(0, 90)">
             <g class="slide-in delay-4">
                 <text x="0" y="10" class="stat-label">Total Issues:</text>
-                <text x="150" y="10" class="stat-value">3</text>
+                <text x="150" y="10" class="stat-value">4</text>
             </g>
         </g>
         <g transform="translate(0, 120)">
@@ -86,7 +86,7 @@
         <g transform="translate(0, 150)">
             <g class="slide-in delay-6">
                 <text x="0" y="10" class="stat-label">Repos Created:</text>
-                <text x="150" y="10" class="stat-value">45</text>
+                <text x="150" y="10" class="stat-value">46</text>
             </g>
         </g>
     </g>
@@ -98,32 +98,32 @@
         <g transform="translate(0, 0)">
             <g class="slide-in delay-2">
                 <text x="0" y="10" class="lang-label">Python</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">46.6%</text>
-                <rect x="0" y="18" width="69.96251893103548" height="6" fill="#3572A5" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">46.3%</text>
+                <rect x="0" y="18" width="69.41551661120988" height="6" fill="#3572A5" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 30)">
             <g class="slide-in delay-3">
                 <text x="0" y="10" class="lang-label">C++</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">14.8%</text>
-                <rect x="0" y="18" width="22.267640391289024" height="6" fill="#f34b7d" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">15.5%</text>
+                <rect x="0" y="18" width="23.242041585726344" height="6" fill="#f34b7d" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 60)">
             <g class="slide-in delay-4">
                 <text x="0" y="10" class="lang-label">CSS</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">9.4%</text>
-                <rect x="0" y="18" width="14.074014395524499" height="6" fill="#663399" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">9.3%</text>
+                <rect x="0" y="18" width="13.911910339808777" height="6" fill="#663399" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 90)">
             <g class="slide-in delay-5">
                 <text x="0" y="10" class="lang-label">TypeScript</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">7.6%</text>
-                <rect x="0" y="18" width="11.437718877695193" height="6" fill="#3178c6" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">7.5%</text>
+                <rect x="0" y="18" width="11.305979590942705" height="6" fill="#3178c6" rx="3"/>
             </g>
         </g>
     
@@ -131,15 +131,15 @@
             <g class="slide-in delay-6">
                 <text x="0" y="10" class="lang-label">C</text>
                 <text x="100" y="10" class="lang-label" text-anchor="end">5.8%</text>
-                <rect x="0" y="18" width="8.713118215386764" height="6" fill="#555555" rx="3"/>
+                <rect x="0" y="18" width="8.71264185942505" height="6" fill="#555555" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 150)">
             <g class="slide-in delay-7">
                 <text x="0" y="10" class="lang-label">JavaScript</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">4.7%</text>
-                <rect x="0" y="18" width="6.986623655777419" height="6" fill="#f1e05a" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">4.6%</text>
+                <rect x="0" y="18" width="6.906151943973495" height="6" fill="#f1e05a" rx="3"/>
             </g>
         </g>
     
