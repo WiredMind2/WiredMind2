@@ -62,13 +62,13 @@
         <g transform="translate(0, 30)">
             <g class="slide-in delay-2">
                 <text x="0" y="10" class="stat-label">Commits (Year):</text>
-                <text x="150" y="10" class="stat-value">673</text>
+                <text x="150" y="10" class="stat-value">738</text>
             </g>
         </g>
         <g transform="translate(0, 60)">
             <g class="slide-in delay-3">
                 <text x="0" y="10" class="stat-label">Total PRs:</text>
-                <text x="150" y="10" class="stat-value">27</text>
+                <text x="150" y="10" class="stat-value">33</text>
             </g>
         </g>
         <g transform="translate(0, 90)">
@@ -98,48 +98,48 @@
         <g transform="translate(0, 0)">
             <g class="slide-in delay-2">
                 <text x="0" y="10" class="lang-label">Python</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">39.4%</text>
-                <rect x="0" y="18" width="59.126454278844086" height="6" fill="#3572A5" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">38.4%</text>
+                <rect x="0" y="18" width="57.65708531902899" height="6" fill="#3572A5" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 30)">
             <g class="slide-in delay-3">
-                <text x="0" y="10" class="lang-label">Jupyter Notebook</text>
+                <text x="0" y="10" class="lang-label">C++</text>
                 <text x="100" y="10" class="lang-label" text-anchor="end">15.8%</text>
-                <rect x="0" y="18" width="23.653847308927517" height="6" fill="#DA5B0B" rx="3"/>
+                <rect x="0" y="18" width="23.689142867947034" height="6" fill="#f34b7d" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 60)">
             <g class="slide-in delay-4">
-                <text x="0" y="10" class="lang-label">C++</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">13.9%</text>
-                <rect x="0" y="18" width="20.84285711425513" height="6" fill="#f34b7d" rx="3"/>
+                <text x="0" y="10" class="lang-label">Jupyter Notebook</text>
+                <text x="100" y="10" class="lang-label" text-anchor="end">15.4%</text>
+                <rect x="0" y="18" width="23.06601857067727" height="6" fill="#DA5B0B" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 90)">
             <g class="slide-in delay-5">
                 <text x="0" y="10" class="lang-label">CSS</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">7.5%</text>
-                <rect x="0" y="18" width="11.21048287321147" height="6" fill="#663399" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">7.3%</text>
+                <rect x="0" y="18" width="10.931887855814502" height="6" fill="#663399" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 120)">
             <g class="slide-in delay-6">
                 <text x="0" y="10" class="lang-label">TypeScript</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">6.1%</text>
-                <rect x="0" y="18" width="9.110574139229518" height="6" fill="#3178c6" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">5.9%</text>
+                <rect x="0" y="18" width="8.884164573332926" height="6" fill="#3178c6" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 150)">
             <g class="slide-in delay-7">
                 <text x="0" y="10" class="lang-label">C</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">4.8%</text>
-                <rect x="0" y="18" width="7.173550115328592" height="6" fill="#555555" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">4.9%</text>
+                <rect x="0" y="18" width="7.319702875740133" height="6" fill="#555555" rx="3"/>
             </g>
         </g>
     
