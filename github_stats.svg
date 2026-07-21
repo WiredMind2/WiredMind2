@@ -62,13 +62,13 @@
         <g transform="translate(0, 30)">
             <g class="slide-in delay-2">
                 <text x="0" y="10" class="stat-label">Commits (Year):</text>
-                <text x="150" y="10" class="stat-value">777</text>
+                <text x="150" y="10" class="stat-value">820</text>
             </g>
         </g>
         <g transform="translate(0, 60)">
             <g class="slide-in delay-3">
                 <text x="0" y="10" class="stat-label">Total PRs:</text>
-                <text x="150" y="10" class="stat-value">55</text>
+                <text x="150" y="10" class="stat-value">67</text>
             </g>
         </g>
         <g transform="translate(0, 90)">
@@ -98,48 +98,48 @@
         <g transform="translate(0, 0)">
             <g class="slide-in delay-2">
                 <text x="0" y="10" class="lang-label">Python</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">48.1%</text>
-                <rect x="0" y="18" width="72.21218341948436" height="6" fill="#3572A5" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">48.9%</text>
+                <rect x="0" y="18" width="73.3213989139842" height="6" fill="#3572A5" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 30)">
             <g class="slide-in delay-3">
                 <text x="0" y="10" class="lang-label">C++</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">11.2%</text>
-                <rect x="0" y="18" width="16.789236784998366" height="6" fill="#f34b7d" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">10.9%</text>
+                <rect x="0" y="18" width="16.38737274402493" height="6" fill="#f34b7d" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 60)">
             <g class="slide-in delay-4">
                 <text x="0" y="10" class="lang-label">Jupyter Notebook</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">10.7%</text>
-                <rect x="0" y="18" width="16.12274695257215" height="6" fill="#DA5B0B" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">10.5%</text>
+                <rect x="0" y="18" width="15.73683588794639" height="6" fill="#DA5B0B" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 90)">
             <g class="slide-in delay-5">
                 <text x="0" y="10" class="lang-label">TypeScript</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">8.9%</text>
-                <rect x="0" y="18" width="13.318096283873686" height="6" fill="#3178c6" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">9.1%</text>
+                <rect x="0" y="18" width="13.660874372067148" height="6" fill="#3178c6" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 120)">
             <g class="slide-in delay-6">
                 <text x="0" y="10" class="lang-label">CSS</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">6.6%</text>
-                <rect x="0" y="18" width="9.88152895969537" height="6" fill="#663399" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">6.4%</text>
+                <rect x="0" y="18" width="9.661600672739501" height="6" fill="#663399" rx="3"/>
             </g>
         </g>
     
         <g transform="translate(0, 150)">
             <g class="slide-in delay-7">
                 <text x="0" y="10" class="lang-label">JavaScript</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">3.7%</text>
-                <rect x="0" y="18" width="5.503933412642988" height="6" fill="#f1e05a" rx="3"/>
+                <text x="100" y="10" class="lang-label" text-anchor="end">3.6%</text>
+                <rect x="0" y="18" width="5.383255053871389" height="6" fill="#f1e05a" rx="3"/>
             </g>
         </g>
     
