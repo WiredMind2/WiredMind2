@@ -36,7 +36,7 @@ jobs:
           # the GraphQL stargazers/languages fields, so it must not be used here.
           GITHUB_TOKEN: ${{ secrets.STATS_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
-          PROFILE_DISPLAY_NAME: William
+          PROFILE_DISPLAY_NAME: William Michaud
         run: python generate_stats.py
 
       - name: Commit and Push

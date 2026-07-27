@@ -14,15 +14,27 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Editable profile copy (rendered into SVGs, not README markdown).
+# Sourced from https://tetrazero.com — keep GitHub-facing and concise.
 TAGLINE = "CS ENGINEERING @ INSA LYON · CLASS OF 2027"
+ROLES = "CTO @ BUDDIMM · PRESIDENT @ INSALGO"
 ABOUT_LINES = [
-    "I build compilers, trading systems, AI tooling, and contest",
-    "software - all open source on GitHub.",
+    "I write code for work, for sport, and for fun.",
+    "Compilers, trading systems, three-player chess engines,",
+    "AI tooling, and contest software - all open source on GitHub.",
 ]
 HIGHLIGHTS = [
-    "ICPC European Championship 2026 - 2nd in France, 40th in Europe",
-    "Castor Informatique winner among 500k+ participants",
+    "ICPC European Championship 2026 - 2nd France, 40th Europe",
+    "ICPC SWERC 2025 - 3rd in France · competing again at SWERC 2026",
+    "Castor Informatique 1st among 500k+ participants",
     "4x Prologin finalist (2022-2025)",
+    "Match'Up Coding Battle winner · designs contests for INSAlgo",
+]
+FOCUS = [
+    "COMPILERS",
+    "TRADING SYSTEMS",
+    "COMPETITIVE PROGRAMMING",
+    "AI TOOLING",
+    "SECURITY",
 ]
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
@@ -159,7 +171,7 @@ result = run_query(query, variables)
 data = result["data"]["user"]
 
 login = data["login"]
-display_name = os.environ.get("PROFILE_DISPLAY_NAME") or "William"
+display_name = os.environ.get("PROFILE_DISPLAY_NAME") or "William Michaud"
 
 total_commits = (
     data["contributionsCollection"]["totalCommitContributions"]
@@ -425,7 +437,7 @@ def wash_defs(width, height, wash_id="wash", opacity=0.1):
 
 
 def build_header_svg():
-    width, height = 880, 210
+    width, height = 880, 228
     coords = [
         (72, 48), (140, 150), (210, 70), (300, 40), (360, 160),
         (450, 55), (520, 145), (600, 45), (680, 155), (760, 80),
@@ -439,6 +451,9 @@ def build_header_svg():
             f'<circle cx="{x}" cy="{y}" r="{r}" fill="var(--acid)" '
             f'class="pulse" style="animation-delay:{delay}s"/>'
         )
+
+    # Slightly smaller display type when the full name is long.
+    name_size = 40 if len(display_name) > 12 else 44
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="headerTitle headerDesc">
   <title id="headerTitle">{esc(display_name)} on GitHub</title>
@@ -467,10 +482,11 @@ def build_header_svg():
   <g class="rise d1">
     {diamond(48, 42)}
     <text x="62" y="46" class="font-mono" style="font-size:11px; fill: var(--acid)">GITHUB · @{esc(login)}</text>
-    <text x="40" y="100" class="font-display" style="font-size:44px">{esc(display_name)}</text>
-    <text x="40" y="132" class="font-mono" style="font-size:12px; letter-spacing:0.12em; fill: var(--muted)">{esc(TAGLINE)}</text>
-    <text x="40" y="160" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--muted)">COMMITS · PULL REQUESTS · OPEN SOURCE</text>
-    <text x="40" y="186" class="font-mono" style="font-size:11px; fill: var(--acid)">{followers} FOLLOWERS  ·  {total_contributions} CONTRIBUTIONS THIS YEAR</text>
+    <text x="40" y="98" class="font-display" style="font-size:{name_size}px">{esc(display_name)}</text>
+    <text x="40" y="128" class="font-mono" style="font-size:12px; letter-spacing:0.12em; fill: var(--muted)">{esc(TAGLINE)}</text>
+    <text x="40" y="152" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--acid)">{esc(ROLES)}</text>
+    <text x="40" y="176" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--muted)">COMPILERS · TRADING · CONTEST SOFTWARE</text>
+    <text x="40" y="204" class="font-mono" style="font-size:11px; fill: var(--acid)">{followers} FOLLOWERS  ·  {total_contributions} CONTRIBUTIONS THIS YEAR</text>
   </g>
 </svg>
 """
@@ -483,9 +499,12 @@ def build_about_svg():
     y_title = 68
     y_body = 104
     body_lh = 24
-    y_highlights = y_body + len(ABOUT_LINES) * body_lh + 28
-    highlight_lh = 28
-    height = y_highlights + len(HIGHLIGHTS) * highlight_lh + 28
+    y_track_label = y_body + len(ABOUT_LINES) * body_lh + 30
+    y_highlights = y_track_label + 26
+    highlight_lh = 26
+    y_focus_label = y_highlights + len(HIGHLIGHTS) * highlight_lh + 24
+    y_focus = y_focus_label + 24
+    height = y_focus + 40
 
     body_parts = []
     for i, line in enumerate(ABOUT_LINES):
@@ -507,6 +526,23 @@ def build_about_svg():
       </g>"""
         )
 
+    focus_parts = []
+    x = gutter
+    for i, chip in enumerate(FOCUS):
+        chip_w = max(88, 18 + len(chip) * 8.2)
+        if x + chip_w > width - gutter:
+            break
+        focus_parts.append(
+            f"""
+      <g transform="translate({x}, {y_focus})">
+        <g class="rise d{min(i + 3, 8)}">
+          <rect width="{chip_w:.1f}" height="26" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+          <text x="{chip_w / 2:.1f}" y="17" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--acid)">{esc(chip)}</text>
+        </g>
+      </g>"""
+        )
+        x += chip_w + 10
+
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aboutTitle aboutDesc">
   <title id="aboutTitle">About {esc(display_name)}</title>
   <desc id="aboutDesc">Background and competitive programming highlights</desc>
@@ -523,7 +559,16 @@ def build_about_svg():
   </g>
 
   {"".join(body_parts)}
+
+  <g class="rise d3">
+    <text x="{gutter}" y="{y_track_label}" class="font-mono" style="font-size:11px; fill: var(--acid)">COMPETITIVE TRACK</text>
+  </g>
   {"".join(highlight_parts)}
+
+  <g class="rise d4">
+    <text x="{gutter}" y="{y_focus_label}" class="font-mono" style="font-size:11px; fill: var(--acid)">FOCUS</text>
+  </g>
+  {"".join(focus_parts)}
 </svg>
 """
 

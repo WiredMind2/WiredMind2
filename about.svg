@@ -1,5 +1,5 @@
-<svg width="880" height="292" viewBox="0 0 880 292" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aboutTitle aboutDesc">
-  <title id="aboutTitle">About William</title>
+<svg width="880" height="450" viewBox="0 0 880 450" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aboutTitle aboutDesc">
+  <title id="aboutTitle">About William Michaud</title>
   <desc id="aboutDesc">Background and competitive programming highlights</desc>
   <style>
 
@@ -104,16 +104,16 @@
   </style>
 
   <defs>
-    <linearGradient id="aboutWash" x1="0" y1="0" x2="880" y2="292" gradientUnits="userSpaceOnUse">
+    <linearGradient id="aboutWash" x1="0" y1="0" x2="880" y2="450" gradientUnits="userSpaceOnUse">
       <stop stop-color="var(--acid)" stop-opacity="0.08"/>
       <stop offset="1" stop-color="var(--night)" stop-opacity="0"/>
     </linearGradient>
   </defs>
 
 
-  <rect width="880" height="292" class="bg"/>
-  <rect width="880" height="292" fill="url(#aboutWash)"/>
-  <rect x="0.5" y="0.5" width="879" height="291" fill="none" stroke="var(--line)"/>
+  <rect width="880" height="450" class="bg"/>
+  <rect width="880" height="450" fill="url(#aboutWash)"/>
+  <rect x="0.5" y="0.5" width="879" height="449" fill="none" stroke="var(--line)"/>
 
 
   <g class="rise d1">
@@ -122,24 +122,75 @@
     <text x="40" y="68" class="font-display" style="font-size:28px">ABOUT</text>
   </g>
 
-  <text x="40" y="104" class="font-body rise d2" style="font-size:16px; fill: var(--ink)">I build compilers, trading systems, AI tooling, and contest</text><text x="40" y="128" class="font-body rise d3" style="font-size:16px; fill: var(--ink)">software - all open source on GitHub.</text>
+  <text x="40" y="104" class="font-body rise d2" style="font-size:16px; fill: var(--ink)">I write code for work, for sport, and for fun.</text><text x="40" y="128" class="font-body rise d3" style="font-size:16px; fill: var(--ink)">Compilers, trading systems, three-player chess engines,</text><text x="40" y="152" class="font-body rise d4" style="font-size:16px; fill: var(--ink)">AI tooling, and contest software - all open source on GitHub.</text>
+
+  <g class="rise d3">
+    <text x="40" y="206" class="font-mono" style="font-size:11px; fill: var(--acid)">COMPETITIVE TRACK</text>
+  </g>
   
-      <g transform="translate(40, 180)">
+      <g transform="translate(40, 232)">
         <g class="rise d4">
           <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
-          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">ICPC European Championship 2026 - 2nd in France, 40th in Europe</text>
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">ICPC European Championship 2026 - 2nd France, 40th Europe</text>
         </g>
       </g>
-      <g transform="translate(40, 208)">
+      <g transform="translate(40, 258)">
         <g class="rise d5">
           <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
-          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">Castor Informatique winner among 500k+ participants</text>
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">ICPC SWERC 2025 - 3rd in France · competing again at SWERC 2026</text>
         </g>
       </g>
-      <g transform="translate(40, 236)">
+      <g transform="translate(40, 284)">
         <g class="rise d6">
           <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">Castor Informatique 1st among 500k+ participants</text>
+        </g>
+      </g>
+      <g transform="translate(40, 310)">
+        <g class="rise d7">
+          <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
           <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">4x Prologin finalist (2022-2025)</text>
+        </g>
+      </g>
+      <g transform="translate(40, 336)">
+        <g class="rise d8">
+          <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">Match'Up Coding Battle winner · designs contests for INSAlgo</text>
+        </g>
+      </g>
+
+  <g class="rise d4">
+    <text x="40" y="386" class="font-mono" style="font-size:11px; fill: var(--acid)">FOCUS</text>
+  </g>
+  
+      <g transform="translate(40, 410)">
+        <g class="rise d3">
+          <rect width="91.8" height="26" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+          <text x="45.9" y="17" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--acid)">COMPILERS</text>
+        </g>
+      </g>
+      <g transform="translate(141.8, 410)">
+        <g class="rise d4">
+          <rect width="141.0" height="26" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+          <text x="70.5" y="17" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--acid)">TRADING SYSTEMS</text>
+        </g>
+      </g>
+      <g transform="translate(292.8, 410)">
+        <g class="rise d5">
+          <rect width="206.6" height="26" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+          <text x="103.3" y="17" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--acid)">COMPETITIVE PROGRAMMING</text>
+        </g>
+      </g>
+      <g transform="translate(509.4, 410)">
+        <g class="rise d6">
+          <rect width="100.0" height="26" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+          <text x="50.0" y="17" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--acid)">AI TOOLING</text>
+        </g>
+      </g>
+      <g transform="translate(619.4, 410)">
+        <g class="rise d7">
+          <rect width="88.0" height="26" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+          <text x="44.0" y="17" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--acid)">SECURITY</text>
         </g>
       </g>
 </svg>

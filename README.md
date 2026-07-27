@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="profile_header.svg" alt="William - GitHub profile" width="880" />
+  <img src="profile_header.svg" alt="William Michaud - GitHub profile" width="880" />
   <br />
-  <img src="about.svg" alt="About: compilers, trading systems, AI tooling" width="880" />
+  <img src="about.svg" alt="About William Michaud: compilers, trading systems, competitive programming" width="880" />
   <br />
   <img src="github_stats.svg" alt="GitHub activity, languages, contribution graph" width="880" />
 </div>
