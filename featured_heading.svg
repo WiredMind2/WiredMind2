@@ -1,0 +1,123 @@
+<svg width="880" height="72" viewBox="0 0 880 72" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="featuredTitle">
+  <title id="featuredTitle">Featured work</title>
+  <style>
+
+    :root {
+        --night: #08090b;
+        --surface: #0e1014;
+        --raised: #14171c;
+        --ink: #e8e6e1;
+        --muted: #8b919c;
+        --line: #20242b;
+        --acid: #c8f750;
+        --acid-dim: #8fb52e;
+    }
+
+    .font-display {
+        font-family: "Syne", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+        fill: var(--ink);
+    }
+    .font-mono {
+        font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+    .font-body {
+        font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+        letter-spacing: 0;
+        text-transform: none;
+        fill: var(--ink);
+    }
+    .bg { fill: var(--night); }
+    .surface { fill: var(--surface); }
+    .ink { fill: var(--ink); }
+    .muted { fill: var(--muted); }
+    .acid { fill: var(--acid); }
+    .line { stroke: var(--line); }
+
+    @keyframes rise {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes sweep {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(8px, -6px); }
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 0.85; }
+    }
+    @keyframes cellIn {
+        from { opacity: 0; transform: scale(0.65); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade { animation: fade 0.8s ease both; }
+    .bar-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .underline-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .drift { animation: drift 8s ease-in-out infinite; }
+    .pulse { animation: pulse 3.2s ease-in-out infinite; }
+    .cell-in {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: cellIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.2s; }
+    .d4 { animation-delay: 0.28s; }
+    .d5 { animation-delay: 0.36s; }
+    .d6 { animation-delay: 0.44s; }
+    .d7 { animation-delay: 0.52s; }
+    .d8 { animation-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rise, .fade, .bar-grow, .underline-grow, .drift, .pulse, .cell-in {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
+  </style>
+
+  <defs>
+    <linearGradient id="featWash" x1="0" y1="0" x2="880" y2="72" gradientUnits="userSpaceOnUse">
+      <stop stop-color="var(--acid)" stop-opacity="0.06"/>
+      <stop offset="1" stop-color="var(--night)" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+
+  <rect width="880" height="72" class="bg"/>
+  <rect width="880" height="72" fill="url(#featWash)"/>
+  <rect x="0.5" y="0.5" width="879" height="71" fill="none" stroke="var(--line)"/>
+
+
+  <g class="rise d1">
+    <rect x="39.5" y="25.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 42 28)"/>
+    <text x="56" y="32" class="font-mono" style="font-size:11px; fill: var(--acid)">03 / FEATURED WORK</text>
+    <text x="40" y="58" class="font-display" style="font-size:22px">FEATURED REPOSITORIES</text>
+  </g>
+</svg>

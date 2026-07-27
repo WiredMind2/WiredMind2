@@ -1,1 +1,8 @@
-/.env
+.env
+.venv/
+__pycache__/
+*.pyc
+
+.playwright-mcp/
+_preview.html
+*.png

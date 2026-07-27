@@ -1,0 +1,132 @@
+<svg width="880" height="228" viewBox="0 0 880 228" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="headerTitle headerDesc">
+  <title id="headerTitle">William Michaud on GitHub</title>
+  <desc id="headerDesc">Animated GitHub profile header for WiredMind2</desc>
+  <style>
+
+    :root {
+        --night: #08090b;
+        --surface: #0e1014;
+        --raised: #14171c;
+        --ink: #e8e6e1;
+        --muted: #8b919c;
+        --line: #20242b;
+        --acid: #c8f750;
+        --acid-dim: #8fb52e;
+    }
+
+    .font-display {
+        font-family: "Syne", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+        fill: var(--ink);
+    }
+    .font-mono {
+        font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+    .font-body {
+        font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+        letter-spacing: 0;
+        text-transform: none;
+        fill: var(--ink);
+    }
+    .bg { fill: var(--night); }
+    .surface { fill: var(--surface); }
+    .ink { fill: var(--ink); }
+    .muted { fill: var(--muted); }
+    .acid { fill: var(--acid); }
+    .line { stroke: var(--line); }
+
+    @keyframes rise {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes sweep {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(8px, -6px); }
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 0.85; }
+    }
+    @keyframes cellIn {
+        from { opacity: 0; transform: scale(0.65); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade { animation: fade 0.8s ease both; }
+    .bar-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .underline-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .drift { animation: drift 8s ease-in-out infinite; }
+    .pulse { animation: pulse 3.2s ease-in-out infinite; }
+    .cell-in {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: cellIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.2s; }
+    .d4 { animation-delay: 0.28s; }
+    .d5 { animation-delay: 0.36s; }
+    .d6 { animation-delay: 0.44s; }
+    .d7 { animation-delay: 0.52s; }
+    .d8 { animation-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rise, .fade, .bar-grow, .underline-grow, .drift, .pulse, .cell-in {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
+  </style>
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="880" y2="228" gradientUnits="userSpaceOnUse">
+      <stop stop-color="var(--acid)" stop-opacity="0.12"/>
+      <stop offset="0.55" stop-color="var(--night)" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="var(--night)" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720 50) rotate(90) scale(160 170)">
+      <stop stop-color="var(--acid)" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="var(--acid)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="880" height="228" class="bg"/>
+  <rect width="880" height="228" fill="url(#wash)"/>
+  <rect x="0.5" y="0.5" width="879" height="227" fill="none" stroke="var(--line)"/>
+  <ellipse cx="720" cy="50" rx="170" ry="110" fill="url(#orb)" class="drift"/>
+  <g aria-hidden="true"><circle cx="72" cy="48" r="1.6" fill="var(--acid)" class="pulse" style="animation-delay:0.0s"/><circle cx="140" cy="150" r="2.3" fill="var(--acid)" class="pulse" style="animation-delay:0.25s"/><circle cx="210" cy="70" r="3.0" fill="var(--acid)" class="pulse" style="animation-delay:0.5s"/><circle cx="300" cy="40" r="1.6" fill="var(--acid)" class="pulse" style="animation-delay:0.75s"/><circle cx="360" cy="160" r="2.3" fill="var(--acid)" class="pulse" style="animation-delay:1.0s"/><circle cx="450" cy="55" r="3.0" fill="var(--acid)" class="pulse" style="animation-delay:1.25s"/><circle cx="520" cy="145" r="1.6" fill="var(--acid)" class="pulse" style="animation-delay:1.5s"/><circle cx="600" cy="45" r="2.3" fill="var(--acid)" class="pulse" style="animation-delay:1.75s"/><circle cx="680" cy="155" r="3.0" fill="var(--acid)" class="pulse" style="animation-delay:0.0s"/><circle cx="760" cy="80" r="1.6" fill="var(--acid)" class="pulse" style="animation-delay:0.25s"/><circle cx="820" cy="130" r="2.3" fill="var(--acid)" class="pulse" style="animation-delay:0.5s"/><circle cx="100" cy="110" r="3.0" fill="var(--acid)" class="pulse" style="animation-delay:0.75s"/><circle cx="250" cy="125" r="1.6" fill="var(--acid)" class="pulse" style="animation-delay:1.0s"/><circle cx="400" cy="100" r="2.3" fill="var(--acid)" class="pulse" style="animation-delay:1.25s"/><circle cx="700" cy="105" r="3.0" fill="var(--acid)" class="pulse" style="animation-delay:1.5s"/></g>
+
+  <g class="rise d1">
+    <rect x="45.5" y="39.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 48 42)"/>
+    <text x="62" y="46" class="font-mono" style="font-size:11px; fill: var(--acid)">GITHUB · @WiredMind2</text>
+    <text x="40" y="98" class="font-display" style="font-size:40px">William Michaud</text>
+    <text x="40" y="128" class="font-mono" style="font-size:12px; letter-spacing:0.12em; fill: var(--muted)">CS ENGINEERING @ INSA LYON · CLASS OF 2027</text>
+    <text x="40" y="152" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--acid)">CTO @ BUDDIMM · PRESIDENT @ INSALGO</text>
+    <text x="40" y="176" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--muted)">COMPILERS · TRADING · CONTEST SOFTWARE</text>
+    <text x="40" y="204" class="font-mono" style="font-size:11px; fill: var(--acid)">16 FOLLOWERS  ·  1848 CONTRIBUTIONS THIS YEAR</text>
+  </g>
+</svg>

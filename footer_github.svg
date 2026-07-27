@@ -1,0 +1,109 @@
+<svg width="260" height="56" viewBox="0 0 260 56" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="footerGithubTitle">
+  <title id="footerGithubTitle">GITHUB.COM/WIREDMIND2</title>
+  <style>
+
+    :root {
+        --night: #08090b;
+        --surface: #0e1014;
+        --raised: #14171c;
+        --ink: #e8e6e1;
+        --muted: #8b919c;
+        --line: #20242b;
+        --acid: #c8f750;
+        --acid-dim: #8fb52e;
+    }
+
+    .font-display {
+        font-family: "Syne", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+        fill: var(--ink);
+    }
+    .font-mono {
+        font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+    .font-body {
+        font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+        letter-spacing: 0;
+        text-transform: none;
+        fill: var(--ink);
+    }
+    .bg { fill: var(--night); }
+    .surface { fill: var(--surface); }
+    .ink { fill: var(--ink); }
+    .muted { fill: var(--muted); }
+    .acid { fill: var(--acid); }
+    .line { stroke: var(--line); }
+
+    @keyframes rise {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes sweep {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(8px, -6px); }
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 0.85; }
+    }
+    @keyframes cellIn {
+        from { opacity: 0; transform: scale(0.65); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade { animation: fade 0.8s ease both; }
+    .bar-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .underline-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .drift { animation: drift 8s ease-in-out infinite; }
+    .pulse { animation: pulse 3.2s ease-in-out infinite; }
+    .cell-in {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: cellIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.2s; }
+    .d4 { animation-delay: 0.28s; }
+    .d5 { animation-delay: 0.36s; }
+    .d6 { animation-delay: 0.44s; }
+    .d7 { animation-delay: 0.52s; }
+    .d8 { animation-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rise, .fade, .bar-grow, .underline-grow, .drift, .pulse, .cell-in {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
+  </style>
+  <rect width="260" height="56" class="surface"/>
+  <rect x="0.5" y="0.5" width="259" height="55" fill="none" stroke="var(--acid)" stroke-opacity="0.65"/>
+  <g class="rise d1">
+    <text x="130.0" y="34" text-anchor="middle" class="font-mono" style="font-size:11px; letter-spacing:0.16em; fill: var(--acid)">GITHUB.COM/WIREDMIND2</text>
+  </g>
+</svg>

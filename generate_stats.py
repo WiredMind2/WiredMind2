@@ -1,11 +1,41 @@
+#!/usr/bin/env python3
+"""Generate animated SVG assets for the GitHub profile README."""
+
+import math
 import os
-import requests
-import datetime
-import time
+import re
 from collections import defaultdict
+from datetime import datetime
+from pathlib import Path
+
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()
+
+# Editable profile copy (rendered into SVGs, not README markdown).
+# Sourced from https://tetrazero.com — keep GitHub-facing and concise.
+TAGLINE = "CS ENGINEERING @ INSA LYON · CLASS OF 2027"
+ROLES = "CTO @ BUDDIMM · PRESIDENT @ INSALGO"
+ABOUT_LINES = [
+    "I write code for work, for sport, and for fun.",
+    "Compilers, trading systems, three-player chess engines,",
+    "AI tooling, and contest software - all open source on GitHub.",
+]
+HIGHLIGHTS = [
+    "ICPC European Championship 2026 - 2nd France, 40th Europe",
+    "ICPC SWERC 2025 - 3rd in France · competing again at SWERC 2026",
+    "Castor Informatique 1st among 500k+ participants",
+    "4x Prologin finalist (2022-2025)",
+    "Match'Up Coding Battle winner · designs contests for INSAlgo",
+]
+FOCUS = [
+    "COMPILERS",
+    "TRADING SYSTEMS",
+    "COMPETITIVE PROGRAMMING",
+    "AI TOOLING",
+    "SECURITY",
+]
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 USERNAME = os.environ.get("GITHUB_USERNAME")
@@ -14,23 +44,35 @@ if not GITHUB_TOKEN:
     raise Exception("GITHUB_TOKEN environment variable is required")
 
 if not USERNAME:
-    # Fallback: try to fetch the authenticated user if username not provided
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
-    r = requests.get("https://api.github.com/user", headers=headers)
+    r = requests.get("https://api.github.com/user", headers=headers, timeout=30)
     if r.status_code == 200:
         USERNAME = r.json()["login"]
     else:
-        raise Exception("GITHUB_USERNAME environment variable is required or token is invalid")
+        raise Exception(
+            "GITHUB_USERNAME environment variable is required or token is invalid"
+        )
 
 print(f"Generating stats for user: {USERNAME}")
 
+
 def run_query(query, variables):
     headers = {"Authorization": f"Bearer {GITHUB_TOKEN}"}
-    request = requests.post('https://api.github.com/graphql', json={'query': query, 'variables': variables}, headers=headers)
+    request = requests.post(
+        "https://api.github.com/graphql",
+        json={"query": query, "variables": variables},
+        headers=headers,
+        timeout=60,
+    )
     if request.status_code == 200:
-        return request.json()
-    else:
-        raise Exception(f"Query failed to run by returning code of {request.status_code}. {query}")
+        payload = request.json()
+        if "errors" in payload:
+            raise Exception(f"GraphQL errors: {payload['errors']}")
+        return payload
+    raise Exception(
+        f"Query failed with status {request.status_code}: {request.text}"
+    )
+
 
 query = """
 query($login: String!) {
@@ -40,16 +82,20 @@ query($login: String!) {
     contributionsCollection {
       totalCommitContributions
       restrictedContributionsCount
-      pullRequestContributions(first: 100) {
-        nodes {
-          pullRequest {
-            additions
-            deletions
+      contributionCalendar {
+        totalContributions
+        weeks {
+          contributionDays {
+            contributionCount
+            date
           }
         }
       }
     }
-    repositoriesContributedTo(first: 1, contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]) {
+    repositoriesContributedTo(
+      first: 1
+      contributionTypes: [COMMIT, ISSUE, PULL_REQUEST, REPOSITORY]
+    ) {
       totalCount
     }
     pullRequests(first: 1) {
@@ -61,20 +107,51 @@ query($login: String!) {
     followers {
       totalCount
     }
-    createdRepositories: repositories(first: 1, ownerAffiliations: OWNER, isFork: false) {
+    createdRepositories: repositories(
+      first: 1
+      ownerAffiliations: OWNER
+      isFork: false
+    ) {
       totalCount
     }
-    repositories(first: 100, ownerAffiliations: OWNER, orderBy: {direction: DESC, field: STARGAZERS}) {
-      totalCount
+    pinnedItems(first: 6, types: REPOSITORY) {
       nodes {
-        name
-        owner {
-          login
+        ... on Repository {
+          name
+          description
+          url
+          primaryLanguage {
+            name
+            color
+          }
+          repositoryTopics(first: 3) {
+            nodes {
+              topic {
+                name
+              }
+            }
+          }
+          languages(first: 3, orderBy: { field: SIZE, direction: DESC }) {
+            edges {
+              node {
+                name
+                color
+              }
+            }
+          }
         }
+      }
+    }
+    repositories(
+      first: 100
+      ownerAffiliations: OWNER
+      orderBy: { direction: DESC, field: STARGAZERS }
+    ) {
+      nodes {
         stargazers {
           totalCount
         }
-        languages(first: 10, orderBy: {field: SIZE, direction: DESC}) {
+        languages(first: 10, orderBy: { field: SIZE, direction: DESC }) {
           edges {
             size
             node {
@@ -93,161 +170,774 @@ variables = {"login": USERNAME}
 result = run_query(query, variables)
 data = result["data"]["user"]
 
-# Process Stats
-total_commits = data["contributionsCollection"]["totalCommitContributions"] + data["contributionsCollection"]["restrictedContributionsCount"]
+login = data["login"]
+display_name = os.environ.get("PROFILE_DISPLAY_NAME") or "William Michaud"
+
+total_commits = (
+    data["contributionsCollection"]["totalCommitContributions"]
+    + data["contributionsCollection"]["restrictedContributionsCount"]
+)
 total_prs = data["pullRequests"]["totalCount"]
 total_issues = data["issues"]["totalCount"]
 total_contributed_to = data["repositoriesContributedTo"]["totalCount"]
 followers = data["followers"]["totalCount"]
 total_created = data["createdRepositories"]["totalCount"]
+calendar = data["contributionsCollection"]["contributionCalendar"]
+total_contributions = calendar["totalContributions"]
 
 repositories = data["repositories"]["nodes"]
-total_stars = sum(repo["stargazers"]["totalCount"] for repo in repositories)
+total_stars = sum(
+    (repo["stargazers"]["totalCount"] or 0)
+    for repo in repositories
+    if repo and repo.get("stargazers")
+)
 
-# Language Stats
 language_sizes = defaultdict(int)
 language_colors = {}
 
 for repo in repositories:
-    if repo["languages"]["edges"]:
-        for edge in repo["languages"]["edges"]:
-            lang_name = edge["node"]["name"]
-            size = edge["size"]
-            color = edge["node"]["color"]
-            language_sizes[lang_name] += size
-            if color:
-                language_colors[lang_name] = color
+    if not repo or not repo.get("languages") or not repo["languages"].get("edges"):
+        continue
+    for edge in repo["languages"]["edges"]:
+        lang_name = edge["node"]["name"]
+        language_sizes[lang_name] += edge["size"]
+        color = edge["node"]["color"]
+        if color:
+            language_colors[lang_name] = color
 
-total_size = sum(language_sizes.values())
+total_size = sum(language_sizes.values()) or 1
 top_languages = sorted(language_sizes.items(), key=lambda x: x[1], reverse=True)[:6]
+pinned = [node for node in data["pinnedItems"]["nodes"] if node]
 
-# Generate SVG
-svg_width = 450
-svg_height = 260
-padding = 25
 
-col_off = 150
+def esc(text):
+    return (
+        str(text)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
 
-svg_content = f"""
-<svg width="{svg_width}" height="{svg_height}" viewBox="0 0 {svg_width} {svg_height}" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <style>
-        :root {{
-            --bg-color: #ffffff;
-            --stroke-color: #e1e4e8;
-            --text-color: #24292e;
-            --secondary-text-color: #586069;
-            --accent-color: #0366d6;
-            --icon-color: #586069;
-        }}
-        @media (prefers-color-scheme: dark) {{
-            :root {{
-                --bg-color: #0d1117;
-                --stroke-color: #30363d;
-                --text-color: #c9d1d9;
-                --secondary-text-color: #8b949e;
-                --accent-color: #58a6ff;
-                --icon-color: #8b949e;
-            }}
-        }}
-        
-        .bg {{ fill: var(--bg-color); stroke: var(--stroke-color); stroke-width: 1px; }}
-        .title {{ font: 600 18px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--accent-color); }}
-        .stat-label {{ font: 400 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--text-color); }}
-        .stat-value {{ font: 600 14px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--text-color); }}
-        .lang-label {{ font: 400 12px 'Segoe UI', Ubuntu, Sans-Serif; fill: var(--secondary-text-color); }}
-        
-        /* Animations */
-        @keyframes slideIn {{
-            from {{ transform: translateX(-20px); opacity: 0; }}
-            to {{ transform: translateX(0); opacity: 1; }}
-        }}
-        
-        .slide-in {{
-            animation: slideIn 0.5s ease-out forwards;
-            opacity: 0; /* Start hidden */
-        }}
-        
-        .delay-1 {{ animation-delay: 0.1s; }}
-        .delay-2 {{ animation-delay: 0.2s; }}
-        .delay-3 {{ animation-delay: 0.3s; }}
-        .delay-4 {{ animation-delay: 0.4s; }}
-        .delay-5 {{ animation-delay: 0.5s; }}
-        .delay-6 {{ animation-delay: 0.6s; }}
-        .delay-7 {{ animation-delay: 0.7s; }}
-        .delay-8 {{ animation-delay: 0.8s; }}
-    </style>
-    
-    <rect x="0.5" y="0.5" rx="6" height="{svg_height - 1}" width="{svg_width - 1}" class="bg"/>
-    
-    <text x="{padding}" y="{padding + 10}" class="title slide-in">{USERNAME}'s GitHub Stats</text>
-    
-    <!-- Stats Column -->
-    <g transform="translate({padding}, {padding + 45})">
-        <g transform="translate(0, 0)">
-            <g class="slide-in delay-1">
-                <text x="0" y="10" class="stat-label">Total Stars:</text>
-                <text x="{col_off}" y="10" class="stat-value">{total_stars}</text>
-            </g>
-        </g>
-        <g transform="translate(0, 30)">
-            <g class="slide-in delay-2">
-                <text x="0" y="10" class="stat-label">Commits (Year):</text>
-                <text x="{col_off}" y="10" class="stat-value">{total_commits}</text>
-            </g>
-        </g>
-        <g transform="translate(0, 60)">
-            <g class="slide-in delay-3">
-                <text x="0" y="10" class="stat-label">Total PRs:</text>
-                <text x="{col_off}" y="10" class="stat-value">{total_prs}</text>
-            </g>
-        </g>
-        <g transform="translate(0, 90)">
-            <g class="slide-in delay-4">
-                <text x="0" y="10" class="stat-label">Total Issues:</text>
-                <text x="{col_off}" y="10" class="stat-value">{total_issues}</text>
-            </g>
-        </g>
-        <g transform="translate(0, 120)">
-            <g class="slide-in delay-5">
-                <text x="0" y="10" class="stat-label">Contributed to:</text>
-                <text x="{col_off}" y="10" class="stat-value">{total_contributed_to}</text>
-            </g>
-        </g>
-        <g transform="translate(0, 150)">
-            <g class="slide-in delay-6">
-                <text x="0" y="10" class="stat-label">Repos Created:</text>
-                <text x="{col_off}" y="10" class="stat-value">{total_created}</text>
-            </g>
-        </g>
-    </g>
 
-    <!-- Languages Column -->
-    <g transform="translate({svg_width / 2 + 20}, {padding + 45})">
-        <text x="0" y="-10" class="stat-label slide-in delay-1" style="font-weight: 600;">Top Languages</text>
+def truncate(text, max_len):
+    text = text or ""
+    if len(text) <= max_len:
+        return text
+    return text[: max_len - 1].rstrip() + "…"
+
+
+def wrap_text(text, max_chars, max_lines=2):
+    text = (text or "").strip() or "Pinned repository"
+    words = text.split()
+    lines = []
+    current = ""
+    for word in words:
+        candidate = f"{current} {word}".strip()
+        if len(candidate) <= max_chars:
+            current = candidate
+            continue
+        if current:
+            lines.append(current)
+        current = word
+        if len(lines) == max_lines:
+            break
+    if len(lines) < max_lines and current:
+        lines.append(current)
+    if len(lines) == max_lines and (
+        len(" ".join(words)) > sum(len(line) for line in lines)
+        or len(lines[-1]) > max_chars
+    ):
+        lines[-1] = truncate(lines[-1], max_chars)
+    return lines[:max_lines]
+
+
+def sanitize_filename(name):
+    cleaned = re.sub(r"[^A-Za-z0-9._-]+", "-", name).strip("-._")
+    return cleaned or "repo"
+
+
+def quantile(sorted_vals, q):
+    if not sorted_vals:
+        return 0
+    if len(sorted_vals) == 1:
+        return sorted_vals[0]
+    pos = (len(sorted_vals) - 1) * q
+    lo = math.floor(pos)
+    hi = math.ceil(pos)
+    if lo == hi:
+        return sorted_vals[lo]
+    frac = pos - lo
+    return sorted_vals[lo] * (1 - frac) + sorted_vals[hi] * frac
+
+
+def contribution_thresholds(weeks):
+    nonzero = sorted(
+        day["contributionCount"]
+        for week in weeks
+        for day in week["contributionDays"]
+        if day["contributionCount"] > 0
+    )
+    if not nonzero:
+        return (1, 2, 3)
+    p50 = max(1, int(round(quantile(nonzero, 0.50))))
+    p75 = max(p50 + 1, int(round(quantile(nonzero, 0.75))))
+    p90 = max(p75 + 1, int(round(quantile(nonzero, 0.90))))
+    return (p50, p75, p90)
+
+
+CONTRIB_COLORS = {
+    0: "var(--raised)",
+    1: "#3d4a1e",
+    2: "#6f8c2c",
+    3: "#a3cf3d",
+    4: "#c8f750",
+}
+
+
+def intensity_level(count, thresholds):
+    if count <= 0:
+        return 0
+    p50, p75, p90 = thresholds
+    if count <= p50:
+        return 1
+    if count <= p75:
+        return 2
+    if count <= p90:
+        return 3
+    return 4
+
+
+SHARED_STYLE = """
+    :root {
+        --night: #08090b;
+        --surface: #0e1014;
+        --raised: #14171c;
+        --ink: #e8e6e1;
+        --muted: #8b919c;
+        --line: #20242b;
+        --acid: #c8f750;
+        --acid-dim: #8fb52e;
+    }
+
+    .font-display {
+        font-family: "Syne", ui-sans-serif, system-ui, sans-serif;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        text-transform: uppercase;
+        fill: var(--ink);
+    }
+    .font-mono {
+        font-family: ui-monospace, "JetBrains Mono", SFMono-Regular, Menlo, monospace;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+    }
+    .font-body {
+        font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+        letter-spacing: 0;
+        text-transform: none;
+        fill: var(--ink);
+    }
+    .bg { fill: var(--night); }
+    .surface { fill: var(--surface); }
+    .ink { fill: var(--ink); }
+    .muted { fill: var(--muted); }
+    .acid { fill: var(--acid); }
+    .line { stroke: var(--line); }
+
+    @keyframes rise {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes sweep {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(8px, -6px); }
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 0.25; }
+        50% { opacity: 0.85; }
+    }
+    @keyframes cellIn {
+        from { opacity: 0; transform: scale(0.65); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade { animation: fade 0.8s ease both; }
+    .bar-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .underline-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .drift { animation: drift 8s ease-in-out infinite; }
+    .pulse { animation: pulse 3.2s ease-in-out infinite; }
+    .cell-in {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: cellIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.2s; }
+    .d4 { animation-delay: 0.28s; }
+    .d5 { animation-delay: 0.36s; }
+    .d6 { animation-delay: 0.44s; }
+    .d7 { animation-delay: 0.52s; }
+    .d8 { animation-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rise, .fade, .bar-grow, .underline-grow, .drift, .pulse, .cell-in {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
 """
 
-for i, (lang, size) in enumerate(top_languages):
-    percentage = (size / total_size) * 100
-    color = language_colors.get(lang, "#ccc")
-    y_pos = i * 30
-    delay_class = f"delay-{i + 2}"
-    
-    svg_content += f"""
-        <g transform="translate(0, {y_pos})">
-            <g class="slide-in {delay_class}">
-                <text x="0" y="10" class="lang-label">{lang}</text>
-                <text x="100" y="10" class="lang-label" text-anchor="end">{percentage:.1f}%</text>
-                <rect x="0" y="18" width="{percentage * 1.5}" height="6" fill="{color}" rx="3"/>
-            </g>
-        </g>
-    """
 
-svg_content += """
-    </g>
+def diamond(cx, cy, size=5):
+    half = size / 2
+    return (
+        f'<rect x="{cx - half}" y="{cy - half}" width="{size}" height="{size}" '
+        f'fill="var(--acid)" transform="rotate(45 {cx} {cy})"/>'
+    )
+
+
+def panel_shell(width, height, wash_id="wash"):
+    return f"""
+  <rect width="{width}" height="{height}" class="bg"/>
+  <rect width="{width}" height="{height}" fill="url(#{wash_id})"/>
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="none" stroke="var(--line)"/>
+"""
+
+
+def wash_defs(width, height, wash_id="wash", opacity=0.1):
+    return f"""
+  <defs>
+    <linearGradient id="{wash_id}" x1="0" y1="0" x2="{width}" y2="{height}" gradientUnits="userSpaceOnUse">
+      <stop stop-color="var(--acid)" stop-opacity="{opacity}"/>
+      <stop offset="1" stop-color="var(--night)" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+"""
+
+
+def build_header_svg():
+    width, height = 880, 228
+    coords = [
+        (72, 48), (140, 150), (210, 70), (300, 40), (360, 160),
+        (450, 55), (520, 145), (600, 45), (680, 155), (760, 80),
+        (820, 130), (100, 110), (250, 125), (400, 100), (700, 105),
+    ]
+    dots = []
+    for i, (x, y) in enumerate(coords):
+        r = 1.6 + (i % 3) * 0.7
+        delay = (i % 8) * 0.25
+        dots.append(
+            f'<circle cx="{x}" cy="{y}" r="{r}" fill="var(--acid)" '
+            f'class="pulse" style="animation-delay:{delay}s"/>'
+        )
+
+    # Slightly smaller display type when the full name is long.
+    name_size = 40 if len(display_name) > 12 else 44
+
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="headerTitle headerDesc">
+  <title id="headerTitle">{esc(display_name)} on GitHub</title>
+  <desc id="headerDesc">Animated GitHub profile header for {esc(login)}</desc>
+  <style>
+{SHARED_STYLE}
+  </style>
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="{width}" y2="{height}" gradientUnits="userSpaceOnUse">
+      <stop stop-color="var(--acid)" stop-opacity="0.12"/>
+      <stop offset="0.55" stop-color="var(--night)" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="var(--night)" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720 50) rotate(90) scale(160 170)">
+      <stop stop-color="var(--acid)" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="var(--acid)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="{width}" height="{height}" class="bg"/>
+  <rect width="{width}" height="{height}" fill="url(#wash)"/>
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="none" stroke="var(--line)"/>
+  <ellipse cx="720" cy="50" rx="170" ry="110" fill="url(#orb)" class="drift"/>
+  <g aria-hidden="true">{"".join(dots)}</g>
+
+  <g class="rise d1">
+    {diamond(48, 42)}
+    <text x="62" y="46" class="font-mono" style="font-size:11px; fill: var(--acid)">GITHUB · @{esc(login)}</text>
+    <text x="40" y="98" class="font-display" style="font-size:{name_size}px">{esc(display_name)}</text>
+    <text x="40" y="128" class="font-mono" style="font-size:12px; letter-spacing:0.12em; fill: var(--muted)">{esc(TAGLINE)}</text>
+    <text x="40" y="152" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--acid)">{esc(ROLES)}</text>
+    <text x="40" y="176" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--muted)">COMPILERS · TRADING · CONTEST SOFTWARE</text>
+    <text x="40" y="204" class="font-mono" style="font-size:11px; fill: var(--acid)">{followers} FOLLOWERS  ·  {total_contributions} CONTRIBUTIONS THIS YEAR</text>
+  </g>
 </svg>
 """
 
-with open("github_stats.svg", "w", encoding="utf-8") as f:
-    f.write(svg_content)
 
-print("Successfully generated github_stats.svg")
+def build_about_svg():
+    width = 880
+    gutter = 40
+    y_eyebrow = 36
+    y_title = 68
+    y_body = 104
+    body_lh = 24
+    y_track_label = y_body + len(ABOUT_LINES) * body_lh + 30
+    y_highlights = y_track_label + 26
+    highlight_lh = 26
+    y_focus_label = y_highlights + len(HIGHLIGHTS) * highlight_lh + 24
+    y_focus = y_focus_label + 24
+    height = y_focus + 40
+
+    body_parts = []
+    for i, line in enumerate(ABOUT_LINES):
+        body_parts.append(
+            f'<text x="{gutter}" y="{y_body + i * body_lh}" class="font-body rise d{i + 2}" '
+            f'style="font-size:16px; fill: var(--ink)">{esc(line)}</text>'
+        )
+
+    highlight_parts = []
+    for i, line in enumerate(HIGHLIGHTS):
+        y = y_highlights + i * highlight_lh
+        highlight_parts.append(
+            f"""
+      <g transform="translate({gutter}, {y})">
+        <g class="rise d{min(i + 4, 8)}">
+          {diamond(4, -4)}
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">{esc(line)}</text>
+        </g>
+      </g>"""
+        )
+
+    focus_parts = []
+    x = gutter
+    for i, chip in enumerate(FOCUS):
+        chip_w = max(88, 18 + len(chip) * 8.2)
+        if x + chip_w > width - gutter:
+            break
+        focus_parts.append(
+            f"""
+      <g transform="translate({x}, {y_focus})">
+        <g class="rise d{min(i + 3, 8)}">
+          <rect width="{chip_w:.1f}" height="26" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+          <text x="{chip_w / 2:.1f}" y="17" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--acid)">{esc(chip)}</text>
+        </g>
+      </g>"""
+        )
+        x += chip_w + 10
+
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aboutTitle aboutDesc">
+  <title id="aboutTitle">About {esc(display_name)}</title>
+  <desc id="aboutDesc">Background and competitive programming highlights</desc>
+  <style>
+{SHARED_STYLE}
+  </style>
+{wash_defs(width, height, "aboutWash", 0.08)}
+{panel_shell(width, height, "aboutWash")}
+
+  <g class="rise d1">
+    {diamond(gutter + 2, y_eyebrow - 4)}
+    <text x="{gutter + 16}" y="{y_eyebrow}" class="font-mono" style="font-size:11px; fill: var(--acid)">01 / ABOUT</text>
+    <text x="{gutter}" y="{y_title}" class="font-display" style="font-size:28px">ABOUT</text>
+  </g>
+
+  {"".join(body_parts)}
+
+  <g class="rise d3">
+    <text x="{gutter}" y="{y_track_label}" class="font-mono" style="font-size:11px; fill: var(--acid)">COMPETITIVE TRACK</text>
+  </g>
+  {"".join(highlight_parts)}
+
+  <g class="rise d4">
+    <text x="{gutter}" y="{y_focus_label}" class="font-mono" style="font-size:11px; fill: var(--acid)">FOCUS</text>
+  </g>
+  {"".join(focus_parts)}
+</svg>
+"""
+
+
+def build_featured_heading_svg():
+    width, height = 880, 72
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="featuredTitle">
+  <title id="featuredTitle">Featured work</title>
+  <style>
+{SHARED_STYLE}
+  </style>
+{wash_defs(width, height, "featWash", 0.06)}
+{panel_shell(width, height, "featWash")}
+
+  <g class="rise d1">
+    {diamond(42, 28)}
+    <text x="56" y="32" class="font-mono" style="font-size:11px; fill: var(--acid)">03 / FEATURED WORK</text>
+    <text x="40" y="58" class="font-display" style="font-size:22px">FEATURED REPOSITORIES</text>
+  </g>
+</svg>
+"""
+
+
+def build_footer_button_svg(label, filename_id):
+    width, height = 260, 56
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="{filename_id}Title">
+  <title id="{filename_id}Title">{esc(label)}</title>
+  <style>
+{SHARED_STYLE}
+  </style>
+  <rect width="{width}" height="{height}" class="surface"/>
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="none" stroke="var(--acid)" stroke-opacity="0.65"/>
+  <g class="rise d1">
+    <text x="{width / 2}" y="34" text-anchor="middle" class="font-mono" style="font-size:11px; letter-spacing:0.16em; fill: var(--acid)">{esc(label)}</text>
+  </g>
+</svg>
+"""
+
+
+def month_labels(weeks, cell, gap, cal_x):
+    labels = []
+    last_month = None
+    for wi, week in enumerate(weeks):
+        if not week["contributionDays"]:
+            continue
+        first = week["contributionDays"][0]
+        dt = datetime.strptime(first["date"], "%Y-%m-%d")
+        month = dt.strftime("%b").upper()
+        if month == last_month:
+            continue
+        x = cal_x + wi * (cell + gap)
+        if labels and x - labels[-1][0] < 28:
+            continue
+        labels.append((x, month))
+        last_month = month
+    return labels
+
+
+def build_stats_svg():
+    width = 880
+    gutter = 40
+    content_w = width - 2 * gutter
+    cell, gap = 11, 3
+    weeks = calendar["weeks"][-52:]
+    thresholds = contribution_thresholds(weeks)
+    cal_w = max(len(weeks) * (cell + gap) - gap, 0)
+
+    y_eyebrow = 36
+    y_title = 68
+    y_kpi = 108
+    y_cols = 188
+    row_h = 28
+    y_cal_label = y_cols + 6 * row_h + 36
+    y_months = y_cal_label + 18
+    y_cal = y_months + 10
+    y_legend = y_cal + 7 * (cell + gap) + 18
+    height = y_legend + 24
+
+    kpis = [
+        (total_contributions, "CONTRIBUTIONS"),
+        (total_commits, "COMMITS"),
+        (total_prs, "PULL REQUESTS"),
+        (total_created, "REPOS"),
+    ]
+    kpi_w = content_w / 4
+    kpi_parts = []
+    for i, (value, label) in enumerate(kpis):
+        x = gutter + i * kpi_w
+        kpi_parts.append(
+            f"""
+      <g transform="translate({x:.1f}, {y_kpi})">
+        <g class="rise d{i + 2}">
+          <text x="0" y="0" class="font-display" style="font-size:28px; fill: var(--acid)">{value}</text>
+          <text x="0" y="22" class="font-mono" style="font-size:10px; fill: var(--muted)">{label}</text>
+        </g>
+      </g>"""
+        )
+
+    overview = [
+        ("STARS", total_stars),
+        ("COMMITS (YEAR)", total_commits),
+        ("PULL REQUESTS", total_prs),
+        ("ISSUES", total_issues),
+        ("CONTRIBUTED TO", total_contributed_to),
+        ("REPOS CREATED", total_created),
+    ]
+    overview_parts = []
+    for i, (label, value) in enumerate(overview):
+        y = y_cols + i * row_h
+        overview_parts.append(
+            f"""
+      <g transform="translate({gutter}, {y})">
+        <g class="rise d{min(i + 2, 8)}">
+          <text x="0" y="0" class="font-mono" style="font-size:11px; fill: var(--muted)">{label}</text>
+          <text x="250" y="0" text-anchor="end" class="font-display" style="font-size:15px; letter-spacing:-0.02em">{value}</text>
+          <line x1="0" y1="10" x2="250" y2="10" stroke="var(--line)" stroke-width="1"/>
+        </g>
+      </g>"""
+        )
+
+    bar_max = 250
+    lang_parts = []
+    for i, (lang, size) in enumerate(top_languages):
+        pct = (size / total_size) * 100
+        bar_w = max(8, (pct / 100) * bar_max)
+        color = language_colors.get(lang, "#8b919c")
+        y = y_cols + i * row_h
+        lang_parts.append(
+            f"""
+      <g transform="translate(470, {y})">
+        <g class="rise d{min(i + 2, 8)}">
+          <text x="0" y="0" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--ink)">{esc(lang.upper())}</text>
+          <text x="{bar_max}" y="0" text-anchor="end" class="font-mono" style="font-size:11px; letter-spacing:0.08em; fill: var(--muted)">{pct:.1f}%</text>
+          <rect x="0" y="8" width="{bar_max}" height="6" fill="var(--raised)"/>
+          <rect x="0" y="8" width="{bar_w:.1f}" height="6" fill="{color}" class="bar-grow" style="animation-delay:{0.18 + i * 0.07}s"/>
+        </g>
+      </g>"""
+        )
+
+    cal_x = gutter
+    cells = []
+    for wi, week in enumerate(weeks):
+        for di, day in enumerate(week["contributionDays"]):
+            count = day["contributionCount"]
+            level = intensity_level(count, thresholds)
+            x = cal_x + wi * (cell + gap)
+            y = y_cal + di * (cell + gap)
+            delay = min(1.6, (wi + di) * 0.012)
+            cells.append(
+                f'<rect x="{x}" y="{y}" width="{cell}" height="{cell}" '
+                f'fill="{CONTRIB_COLORS[level]}" class="cell-in" '
+                f'style="animation-delay:{delay:.3f}s">'
+                f'<title>{esc(day["date"])}: {count}</title></rect>'
+            )
+
+    month_parts = []
+    for x, month in month_labels(weeks, cell, gap, cal_x):
+        month_parts.append(
+            f'<text x="{x}" y="{y_months}" class="font-mono" '
+            f'style="font-size:9px; letter-spacing:0.12em; fill: var(--muted)">{month}</text>'
+        )
+
+    legend_swatches = []
+    legend_x = gutter + cal_w - 120
+    for i, level in enumerate(range(5)):
+        legend_swatches.append(
+            f'<rect x="{legend_x + i * 14}" y="{y_legend - 8}" width="11" height="11" '
+            f'fill="{CONTRIB_COLORS[level]}"/>'
+        )
+
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="statsTitle statsDesc">
+  <title id="statsTitle">{esc(login)} GitHub stats</title>
+  <desc id="statsDesc">Auto-updated stats, languages, and contribution activity</desc>
+  <style>
+{SHARED_STYLE}
+  </style>
+{wash_defs(width, height, "statsWash", 0.08)}
+{panel_shell(width, height, "statsWash")}
+
+  <g class="rise d1">
+    {diamond(gutter + 2, y_eyebrow - 4)}
+    <text x="{gutter + 16}" y="{y_eyebrow}" class="font-mono" style="font-size:11px; fill: var(--acid)">02 / ACTIVITY</text>
+    <text x="{gutter}" y="{y_title}" class="font-display" style="font-size:28px">GITHUB ACTIVITY</text>
+    <text x="{width - gutter}" y="{y_title}" text-anchor="end" class="font-mono" style="font-size:10px; fill: var(--muted)">UPDATED DAILY</text>
+  </g>
+
+  {"".join(kpi_parts)}
+
+  <g class="rise d2">
+    <text x="{gutter}" y="{y_cols - 18}" class="font-mono" style="font-size:11px; fill: var(--acid)">OVERVIEW</text>
+    <text x="470" y="{y_cols - 18}" class="font-mono" style="font-size:11px; fill: var(--acid)">TOP LANGUAGES</text>
+  </g>
+
+  {"".join(overview_parts)}
+  {"".join(lang_parts)}
+
+  <g class="rise d6">
+    <text x="{gutter}" y="{y_cal_label}" class="font-mono" style="font-size:11px; fill: var(--ink)">CONTRIBUTION GRAPH · {total_contributions} LAST YEAR</text>
+    {"".join(month_parts)}
+    {"".join(cells)}
+    <text x="{legend_x - 8}" y="{y_legend}" text-anchor="end" class="font-mono" style="font-size:9px; letter-spacing:0.12em; fill: var(--muted)">LESS</text>
+    {"".join(legend_swatches)}
+    <text x="{legend_x + 5 * 14 + 4}" y="{y_legend}" class="font-mono" style="font-size:9px; letter-spacing:0.12em; fill: var(--muted)">MORE</text>
+  </g>
+</svg>
+"""
+
+
+def build_repo_card_svg(repo, index):
+    width, height = 440, 180
+    name = repo["name"]
+    desc_lines = wrap_text(repo.get("description"), 40, 2)
+    lang = (repo.get("primaryLanguage") or {}).get("name")
+    lang_color = (repo.get("primaryLanguage") or {}).get("color") or "#c8f750"
+    topics = [
+        node["topic"]["name"]
+        for node in (repo.get("repositoryTopics") or {}).get("nodes") or []
+        if node and node.get("topic")
+    ]
+    chips = []
+    if lang:
+        chips.append(lang)
+    for topic in topics:
+        if topic.lower() != (lang or "").lower() and len(chips) < 3:
+            chips.append(topic.replace("-", " "))
+
+    chip_parts = []
+    x = 20
+    for chip in chips[:3]:
+        label = truncate(chip.upper(), 14)
+        chip_w = max(46, 12 + len(label) * 7.8)
+        if x + chip_w > width - 20:
+            break
+        chip_parts.append(
+            f"""
+      <g transform="translate({x}, 118)">
+        <rect width="{chip_w:.1f}" height="22" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+        <text x="{chip_w / 2:.1f}" y="15" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.12em; fill: var(--acid)">{esc(label)}</text>
+      </g>"""
+        )
+        x += chip_w + 8
+
+    desc_svg = []
+    for i, line in enumerate(desc_lines):
+        desc_svg.append(
+            f'<text x="20" y="{82 + i * 17}" class="font-body" '
+            f'style="font-size:12px; fill: var(--muted)">{esc(line)}</text>'
+        )
+
+    idx = f"{index + 1:02d}"
+
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="repoTitle{idx} repoDesc{idx}">
+  <title id="repoTitle{idx}">{esc(name)}</title>
+  <desc id="repoDesc{idx}">{esc(repo.get("description") or "Pinned repository")}</desc>
+  <style>
+{SHARED_STYLE}
+    .ghost {{
+      font-family: "Syne", ui-sans-serif, system-ui, sans-serif;
+      font-weight: 800;
+      font-size: 72px;
+      letter-spacing: -0.04em;
+      fill: none;
+      stroke: var(--line);
+      stroke-width: 1.25;
+    }}
+  </style>
+
+  <rect width="{width}" height="{height}" class="surface"/>
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="none" stroke="var(--line)"/>
+
+  <text x="{width - 18}" y="78" text-anchor="end" class="ghost fade d1">{idx}</text>
+
+  <g class="rise d2">
+    {diamond(24, 28)}
+    <text x="36" y="32" class="font-mono" style="font-size:10px; fill: var(--acid)">0{index + 1} / FEATURED</text>
+    <circle cx="20" cy="58" r="4" fill="{lang_color}"/>
+    <text x="32" y="63" class="font-display" style="font-size:22px">{esc(truncate(name.upper(), 20))}</text>
+    {"".join(desc_svg)}
+  </g>
+
+  <g class="rise d4">
+    {"".join(chip_parts)}
+    <text x="{width - 20}" y="160" text-anchor="end" class="font-mono" style="font-size:14px; letter-spacing:0; fill: var(--acid)">↗</text>
+    <rect x="20" y="{height - 2}" width="{width - 40}" height="1" fill="var(--acid)" class="underline-grow" style="animation-delay:0.25s"/>
+  </g>
+</svg>
+"""
+
+
+def write_repo_cards(pinned_repos):
+    cards_dir = Path("cards")
+    cards_dir.mkdir(exist_ok=True)
+    keep = set()
+    card_paths = []
+    for i, repo in enumerate(pinned_repos):
+        filename = f"{sanitize_filename(repo['name'])}.svg"
+        keep.add(filename)
+        path = cards_dir / filename
+        path.write_text(build_repo_card_svg(repo, i), encoding="utf-8")
+        card_paths.append((repo, f"cards/{filename}"))
+        print(f"  wrote {path}")
+
+    for existing in cards_dir.glob("*.svg"):
+        if existing.name not in keep:
+            existing.unlink()
+            print(f"  removed stale {existing}")
+    return card_paths
+
+
+def build_pinned_markdown(card_paths):
+    lines = [
+        "",
+        '<div align="center">',
+        f'<img src="featured_heading.svg" alt="Featured repositories" width="880" />',
+        "",
+    ]
+    if card_paths:
+        lines.append("<table>")
+        for i in range(0, len(card_paths), 2):
+            lines.append("<tr>")
+            for repo, path in card_paths[i : i + 2]:
+                lines.append('<td width="50%">')
+                lines.append(
+                    f'<a href="{repo["url"]}">'
+                    f'<img src="{path}" alt="{esc(repo["name"])} repository card" width="100%"/>'
+                    f"</a>"
+                )
+                lines.append("</td>")
+            if len(card_paths[i : i + 2]) == 1:
+                lines.append('<td width="50%"></td>')
+            lines.append("</tr>")
+        lines.append("</table>")
+    lines.extend(["", "</div>", ""])
+    return "\n".join(lines)
+
+
+def sync_readme_pinned(pinned_md):
+    readme_path = "README.md"
+    start = "<!-- DYNAMIC:PINNED:START -->"
+    end = "<!-- DYNAMIC:PINNED:END -->"
+    with open(readme_path, "r", encoding="utf-8") as f:
+        content = f.read()
+    if start not in content or end not in content:
+        print("README markers missing; skipped pinned section sync")
+        return
+    before, rest = content.split(start, 1)
+    _, after = rest.split(end, 1)
+    updated = f"{before}{start}\n{pinned_md}{end}{after}"
+    with open(readme_path, "w", encoding="utf-8") as f:
+        f.write(updated)
+
+
+assets = {
+    "profile_header.svg": build_header_svg(),
+    "about.svg": build_about_svg(),
+    "github_stats.svg": build_stats_svg(),
+    "featured_heading.svg": build_featured_heading_svg(),
+    "footer_github.svg": build_footer_button_svg(
+        f"GITHUB.COM/{login.upper()}", "footerGithub"
+    ),
+    "footer_portfolio.svg": build_footer_button_svg("TETRAZERO.COM", "footerPortfolio"),
+}
+
+for path, content in assets.items():
+    Path(path).write_text(content, encoding="utf-8")
+    print(f"  wrote {path}")
+
+print("Writing featured repository cards...")
+card_paths = write_repo_cards(pinned)
+sync_readme_pinned(build_pinned_markdown(card_paths))
+
+print("Successfully generated all profile SVGs and synced README.md")
