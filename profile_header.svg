@@ -1,0 +1,116 @@
+<svg width="880" height="200" viewBox="0 0 880 200" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="headerTitle headerDesc">
+  <title id="headerTitle">William on GitHub</title>
+  <desc id="headerDesc">Animated GitHub profile header for WiredMind2</desc>
+  <style>
+
+    :root {
+        --bg: #f3f7f5;
+        --ink: #14201c;
+        --muted: #5c6b66;
+        --line: #d5e0db;
+        --accent: #0f766e;
+        --accent-soft: #99f6e4;
+        --cell-0: #e6eeea;
+        --glow: rgba(15, 118, 110, 0.14);
+    }
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --bg: #0b1210;
+            --ink: #e7f0ec;
+            --muted: #93a39c;
+            --line: #24302c;
+            --accent: #2dd4bf;
+            --accent-soft: #115e59;
+            --cell-0: #1b2421;
+            --glow: rgba(45, 212, 191, 0.14);
+        }
+    }
+
+    .font { font-family: "Segoe UI", ui-sans-serif, system-ui, sans-serif; }
+    .bg { fill: var(--bg); }
+
+    @keyframes rise {
+        from { opacity: 0; transform: translateY(12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fade {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    @keyframes sweep {
+        from { transform: scaleX(0); }
+        to { transform: scaleX(1); }
+    }
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(8px, -6px); }
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+    }
+    @keyframes cellIn {
+        from { opacity: 0; transform: scale(0.65); }
+        to { opacity: 1; transform: scale(1); }
+    }
+
+    .rise { animation: rise 0.7s cubic-bezier(0.22, 1, 0.36, 1) both; }
+    .fade { animation: fade 0.8s ease both; }
+    .bar-grow {
+        transform-box: fill-box;
+        transform-origin: left center;
+        animation: sweep 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .drift { animation: drift 8s ease-in-out infinite; }
+    .pulse { animation: pulse 3.2s ease-in-out infinite; }
+    .cell-in {
+        transform-box: fill-box;
+        transform-origin: center;
+        animation: cellIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .d1 { animation-delay: 0.05s; }
+    .d2 { animation-delay: 0.12s; }
+    .d3 { animation-delay: 0.2s; }
+    .d4 { animation-delay: 0.28s; }
+    .d5 { animation-delay: 0.36s; }
+    .d6 { animation-delay: 0.44s; }
+    .d7 { animation-delay: 0.52s; }
+    .d8 { animation-delay: 0.6s; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .rise, .fade, .bar-grow, .drift, .pulse, .cell-in {
+            animation: none !important;
+            opacity: 1 !important;
+            transform: none !important;
+        }
+    }
+
+    .name { font: 700 44px "Segoe UI", ui-sans-serif, system-ui, sans-serif; fill: var(--ink); letter-spacing: -0.03em; }
+    .tag { font: 500 15px "Segoe UI", ui-sans-serif, system-ui, sans-serif; fill: var(--muted); }
+    .meta { font: 600 13px "Segoe UI", ui-sans-serif, system-ui, sans-serif; fill: var(--accent); }
+  </style>
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="880" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="var(--accent-soft)" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="var(--bg)" stop-opacity="0.15"/>
+      <stop offset="1" stop-color="var(--bg)" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(720 50) rotate(90) scale(160 170)">
+      <stop stop-color="var(--accent)" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="var(--accent)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="880" height="200" rx="18" class="bg"/>
+  <rect width="880" height="200" rx="18" fill="url(#wash)"/>
+  <ellipse cx="720" cy="50" rx="170" ry="110" fill="url(#orb)" class="drift"/>
+  <g aria-hidden="true"><circle cx="72" cy="48" r="1.6" fill="var(--accent)" class="pulse" style="animation-delay:0.0s"/><circle cx="140" cy="150" r="2.3" fill="var(--accent)" class="pulse" style="animation-delay:0.25s"/><circle cx="210" cy="70" r="3.0" fill="var(--accent)" class="pulse" style="animation-delay:0.5s"/><circle cx="300" cy="40" r="1.6" fill="var(--accent)" class="pulse" style="animation-delay:0.75s"/><circle cx="360" cy="160" r="2.3" fill="var(--accent)" class="pulse" style="animation-delay:1.0s"/><circle cx="450" cy="55" r="3.0" fill="var(--accent)" class="pulse" style="animation-delay:1.25s"/><circle cx="520" cy="145" r="1.6" fill="var(--accent)" class="pulse" style="animation-delay:1.5s"/><circle cx="600" cy="45" r="2.3" fill="var(--accent)" class="pulse" style="animation-delay:1.75s"/><circle cx="680" cy="155" r="3.0" fill="var(--accent)" class="pulse" style="animation-delay:0.0s"/><circle cx="760" cy="80" r="1.6" fill="var(--accent)" class="pulse" style="animation-delay:0.25s"/><circle cx="820" cy="130" r="2.3" fill="var(--accent)" class="pulse" style="animation-delay:0.5s"/><circle cx="100" cy="110" r="3.0" fill="var(--accent)" class="pulse" style="animation-delay:0.75s"/><circle cx="250" cy="125" r="1.6" fill="var(--accent)" class="pulse" style="animation-delay:1.0s"/><circle cx="400" cy="100" r="2.3" fill="var(--accent)" class="pulse" style="animation-delay:1.25s"/><circle cx="700" cy="105" r="3.0" fill="var(--accent)" class="pulse" style="animation-delay:1.5s"/></g>
+
+  <g class="rise d1">
+    <text x="48" y="58" class="meta font">GITHUB · @WiredMind2</text>
+    <text x="48" y="112" class="name">William</text>
+    <text x="48" y="148" class="tag">Commits, pull requests, and open-source work — updated daily</text>
+    <text x="48" y="176" class="meta font">16 followers  ·  1845 contributions this year</text>
+  </g>
+</svg>
