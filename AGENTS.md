@@ -22,13 +22,20 @@ script (`python3 -m venv .venv` + `pip install -r requirements.txt`). Use
 - No automated tests exist.
 
 ### Required credentials (non-obvious gotcha)
-`generate_stats.py` needs a **classic or fine-grained Personal Access Token** in
-`GITHUB_TOKEN` with read access to public user data. The repo's built-in
-`gh`/git installation token (`ghs_...`, a GitHub App token) authenticates and
-returns most fields, but GitHub returns `FORBIDDEN: Resource not accessible by
-integration` for the GraphQL `stargazers` and `languages` fields. With that token
-the script fails at the `total_stars` aggregation with
-`TypeError: 'NoneType' object is not subscriptable`. Provide a real PAT (a repo
-Actions secret works in CI) to run end to end. `GITHUB_USERNAME` defaults to the
-GraphQL viewer if unset, but an installation token cannot resolve `/user`, so pass
-`GITHUB_USERNAME` explicitly (the repo owner is `WiredMind2`).
+`generate_stats.py` needs a **classic Personal Access Token** (`ghp_...`) in
+`GITHUB_TOKEN` with read access to public user data (e.g. `public_repo` +
+`read:user`). The GraphQL query reads the `stargazers` and `languages` fields on
+the `repositories` connection, and those are **not** accessible to either:
+- the repo's built-in installation token (`ghs_...`) — returns `FORBIDDEN:
+  Resource not accessible by integration`, or
+- a **fine-grained** PAT (`github_pat_...`) — returns `FORBIDDEN: Resource not
+  accessible by personal access token`.
+
+With either of those tokens the script authenticates and fetches most fields but
+then crashes at the `total_stars` aggregation with
+`TypeError: 'NoneType' object is not subscriptable`. Only a classic PAT resolves
+those GraphQL fields end to end. (In CI, `secrets.GITHUB_TOKEN` runs against the
+repo owner's own public data.)
+
+`GITHUB_USERNAME` defaults to the GraphQL viewer if unset; pass it explicitly to
+target the repo owner (`WiredMind2`).
