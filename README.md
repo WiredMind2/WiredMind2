@@ -1,11 +1,11 @@
 <div align="center">
-  <img src="profile_header.svg" alt="WiredMind GitHub profile header" width="880" />
+  <img src="profile_header.svg" alt="William GitHub profile header" width="880" />
 </div>
 
 <br />
 
 <p align="center">
-  CS &amp; Engineering @ <a href="https://www.insa-lyon.fr/">INSA Lyon</a>
+  CS Engineering @ <a href="https://www.insa-lyon.fr/">INSA Lyon</a> · Class of 2027
   · competitive programming
   · open source on GitHub
 </p>
@@ -14,13 +14,12 @@
 
 ### About
 
-Fourth-year CS student focused on algorithms, systems, and shipping useful code.
-On GitHub that means frequent commits, pull requests, and community tooling —
-including work around **INSAlgo** and contest software.
+I build compilers, trading systems, AI tooling, and contest software —
+all open source on GitHub. CS engineering student at **INSA Lyon**, currently CTO at Buddimm.
 
-- ICPC competitor (2024, 2025) — 2nd in France; SWERC & European Championship
-- Match'Up Coding Battle 2022 winner
-- 4× Prologin finalist (2021–2025)
+- ICPC European Championship 2026 — 2nd in France, 40th in Europe
+- Castor Informatique winner among 500k+ participants
+- 4× Prologin finalist (2022–2025)
 
 ---
 
@@ -34,17 +33,24 @@ including work around **INSAlgo** and contest software.
 
 ### Featured repositories
 
-**[OpenTrade](https://github.com/WiredMind2/OpenTrade)** — A comprehensive Python system for algorithmic trading backtesting with sentimen…  
-`★ 0 · Python`
-
-**[Chess2](https://github.com/WiredMind2/Chess2)** — A C++ implementation of a three-player chess game on a hexagonal board, featuri…  
-`★ 1 · C++`
-
-**[AnimeManager](https://github.com/WiredMind2/AnimeManager)** — AnimeManager is a Python streaming application that also handles anime discover…  
-`★ 1 · Python`
-
-**[C-Compiler](https://github.com/WiredMind2/C-Compiler)** — Pinned repository  
-`★ 1 · C++`
+<table>
+<tr>
+<td width="50%">
+<a href="https://github.com/WiredMind2/OpenTrade"><img src="cards/OpenTrade.svg" alt="OpenTrade repository card" width="100%"/></a>
+</td>
+<td width="50%">
+<a href="https://github.com/WiredMind2/Chess2"><img src="cards/Chess2.svg" alt="Chess2 repository card" width="100%"/></a>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<a href="https://github.com/WiredMind2/AnimeManager"><img src="cards/AnimeManager.svg" alt="AnimeManager repository card" width="100%"/></a>
+</td>
+<td width="50%">
+<a href="https://github.com/WiredMind2/C-Compiler"><img src="cards/C-Compiler.svg" alt="C-Compiler repository card" width="100%"/></a>
+</td>
+</tr>
+</table>
 
 </div>
 <!-- DYNAMIC:PINNED:END -->
