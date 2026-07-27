@@ -1,37 +1,15 @@
 <div align="center">
-  <img src="profile_header.svg" alt="William GitHub profile header" width="880" />
-</div>
-
-<br />
-
-<p align="center">
-  CS Engineering @ <a href="https://www.insa-lyon.fr/">INSA Lyon</a> · Class of 2027
-  · competitive programming
-  · open source on GitHub
-</p>
-
----
-
-### About
-
-I build compilers, trading systems, AI tooling, and contest software —
-all open source on GitHub. CS engineering student at **INSA Lyon**, currently CTO at Buddimm.
-
-- ICPC European Championship 2026 — 2nd in France, 40th in Europe
-- Castor Informatique winner among 500k+ participants
-- 4× Prologin finalist (2022–2025)
-
----
-
-<div align="center">
-  <img src="github_stats.svg" alt="Auto-updated GitHub stats and contribution graph" width="880" />
+  <img src="profile_header.svg" alt="William - GitHub profile" width="880" />
+  <br />
+  <img src="about.svg" alt="About: compilers, trading systems, AI tooling" width="880" />
+  <br />
+  <img src="github_stats.svg" alt="GitHub activity, languages, contribution graph" width="880" />
 </div>
 
 <!-- DYNAMIC:PINNED:START -->
 
 <div align="center">
-
-### Featured repositories
+<img src="featured_heading.svg" alt="Featured repositories" width="880" />
 
 <table>
 <tr>
@@ -55,10 +33,7 @@ all open source on GitHub. CS engineering student at **INSA Lyon**, currently CT
 </div>
 <!-- DYNAMIC:PINNED:END -->
 
----
-
-<p align="center">
-  <a href="https://github.com/WiredMind2">github.com/WiredMind2</a>
-  ·
-  <a href="https://tetrazero.com">tetrazero.com</a>
-</p>
+<div align="center">
+  <a href="https://github.com/WiredMind2"><img src="footer_github.svg" alt="github.com/WiredMind2" height="56" /></a>
+  <a href="https://tetrazero.com"><img src="footer_portfolio.svg" alt="tetrazero.com" height="56" /></a>
+</div>

@@ -13,6 +13,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+# Editable profile copy (rendered into SVGs, not README markdown).
+TAGLINE = "CS ENGINEERING @ INSA LYON · CLASS OF 2027"
+ABOUT_LINES = [
+    "I build compilers, trading systems, AI tooling, and contest",
+    "software - all open source on GitHub.",
+]
+HIGHLIGHTS = [
+    "ICPC European Championship 2026 - 2nd in France, 40th in Europe",
+    "Castor Informatique winner among 500k+ participants",
+    "4x Prologin finalist (2022-2025)",
+]
+
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
 USERNAME = os.environ.get("GITHUB_USERNAME")
 
@@ -308,6 +320,12 @@ SHARED_STYLE = """
         letter-spacing: 0.2em;
         text-transform: uppercase;
     }
+    .font-body {
+        font-family: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+        letter-spacing: 0;
+        text-transform: none;
+        fill: var(--ink);
+    }
     .bg { fill: var(--night); }
     .surface { fill: var(--surface); }
     .ink { fill: var(--ink); }
@@ -387,8 +405,27 @@ def diamond(cx, cy, size=5):
     )
 
 
+def panel_shell(width, height, wash_id="wash"):
+    return f"""
+  <rect width="{width}" height="{height}" class="bg"/>
+  <rect width="{width}" height="{height}" fill="url(#{wash_id})"/>
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="none" stroke="var(--line)"/>
+"""
+
+
+def wash_defs(width, height, wash_id="wash", opacity=0.1):
+    return f"""
+  <defs>
+    <linearGradient id="{wash_id}" x1="0" y1="0" x2="{width}" y2="{height}" gradientUnits="userSpaceOnUse">
+      <stop stop-color="var(--acid)" stop-opacity="{opacity}"/>
+      <stop offset="1" stop-color="var(--night)" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+"""
+
+
 def build_header_svg():
-    width, height = 880, 200
+    width, height = 880, 210
     coords = [
         (72, 48), (140, 150), (210, 70), (300, 40), (360, 160),
         (450, 55), (520, 145), (600, 45), (680, 155), (760, 80),
@@ -430,9 +467,97 @@ def build_header_svg():
   <g class="rise d1">
     {diamond(48, 42)}
     <text x="62" y="46" class="font-mono" style="font-size:11px; fill: var(--acid)">GITHUB · @{esc(login)}</text>
-    <text x="40" y="108" class="font-display" style="font-size:44px">{esc(display_name)}</text>
-    <text x="40" y="142" class="font-mono" style="font-size:12px; letter-spacing:0.12em; fill: var(--muted)">COMMITS · PULL REQUESTS · OPEN SOURCE</text>
-    <text x="40" y="172" class="font-mono" style="font-size:11px; fill: var(--acid)">{followers} FOLLOWERS  ·  {total_contributions} CONTRIBUTIONS THIS YEAR</text>
+    <text x="40" y="100" class="font-display" style="font-size:44px">{esc(display_name)}</text>
+    <text x="40" y="132" class="font-mono" style="font-size:12px; letter-spacing:0.12em; fill: var(--muted)">{esc(TAGLINE)}</text>
+    <text x="40" y="160" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--muted)">COMMITS · PULL REQUESTS · OPEN SOURCE</text>
+    <text x="40" y="186" class="font-mono" style="font-size:11px; fill: var(--acid)">{followers} FOLLOWERS  ·  {total_contributions} CONTRIBUTIONS THIS YEAR</text>
+  </g>
+</svg>
+"""
+
+
+def build_about_svg():
+    width = 880
+    gutter = 40
+    y_eyebrow = 36
+    y_title = 68
+    y_body = 104
+    body_lh = 24
+    y_highlights = y_body + len(ABOUT_LINES) * body_lh + 28
+    highlight_lh = 28
+    height = y_highlights + len(HIGHLIGHTS) * highlight_lh + 28
+
+    body_parts = []
+    for i, line in enumerate(ABOUT_LINES):
+        body_parts.append(
+            f'<text x="{gutter}" y="{y_body + i * body_lh}" class="font-body rise d{i + 2}" '
+            f'style="font-size:16px; fill: var(--ink)">{esc(line)}</text>'
+        )
+
+    highlight_parts = []
+    for i, line in enumerate(HIGHLIGHTS):
+        y = y_highlights + i * highlight_lh
+        highlight_parts.append(
+            f"""
+      <g transform="translate({gutter}, {y})">
+        <g class="rise d{min(i + 4, 8)}">
+          {diamond(4, -4)}
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">{esc(line)}</text>
+        </g>
+      </g>"""
+        )
+
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="aboutTitle aboutDesc">
+  <title id="aboutTitle">About {esc(display_name)}</title>
+  <desc id="aboutDesc">Background and competitive programming highlights</desc>
+  <style>
+{SHARED_STYLE}
+  </style>
+{wash_defs(width, height, "aboutWash", 0.08)}
+{panel_shell(width, height, "aboutWash")}
+
+  <g class="rise d1">
+    {diamond(gutter + 2, y_eyebrow - 4)}
+    <text x="{gutter + 16}" y="{y_eyebrow}" class="font-mono" style="font-size:11px; fill: var(--acid)">01 / ABOUT</text>
+    <text x="{gutter}" y="{y_title}" class="font-display" style="font-size:28px">ABOUT</text>
+  </g>
+
+  {"".join(body_parts)}
+  {"".join(highlight_parts)}
+</svg>
+"""
+
+
+def build_featured_heading_svg():
+    width, height = 880, 72
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="featuredTitle">
+  <title id="featuredTitle">Featured work</title>
+  <style>
+{SHARED_STYLE}
+  </style>
+{wash_defs(width, height, "featWash", 0.06)}
+{panel_shell(width, height, "featWash")}
+
+  <g class="rise d1">
+    {diamond(42, 28)}
+    <text x="56" y="32" class="font-mono" style="font-size:11px; fill: var(--acid)">03 / FEATURED WORK</text>
+    <text x="40" y="58" class="font-display" style="font-size:22px">FEATURED REPOSITORIES</text>
+  </g>
+</svg>
+"""
+
+
+def build_footer_button_svg(label, filename_id):
+    width, height = 260, 56
+    return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="{filename_id}Title">
+  <title id="{filename_id}Title">{esc(label)}</title>
+  <style>
+{SHARED_STYLE}
+  </style>
+  <rect width="{width}" height="{height}" class="surface"/>
+  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="none" stroke="var(--acid)" stroke-opacity="0.65"/>
+  <g class="rise d1">
+    <text x="{width / 2}" y="34" text-anchor="middle" class="font-mono" style="font-size:11px; letter-spacing:0.16em; fill: var(--acid)">{esc(label)}</text>
   </g>
 </svg>
 """
@@ -449,7 +574,6 @@ def month_labels(weeks, cell, gap, cal_x):
         month = dt.strftime("%b").upper()
         if month == last_month:
             continue
-        # Skip a label if the previous month marker is too close.
         x = cal_x + wi * (cell + gap)
         if labels and x - labels[-1][0] < 28:
             continue
@@ -467,7 +591,6 @@ def build_stats_svg():
     thresholds = contribution_thresholds(weeks)
     cal_w = max(len(weeks) * (cell + gap) - gap, 0)
 
-    # Vertical rhythm
     y_eyebrow = 36
     y_title = 68
     y_kpi = 108
@@ -577,20 +700,12 @@ def build_stats_svg():
   <style>
 {SHARED_STYLE}
   </style>
-  <defs>
-    <linearGradient id="statsWash" x1="0" y1="0" x2="{width}" y2="{height}" gradientUnits="userSpaceOnUse">
-      <stop stop-color="var(--acid)" stop-opacity="0.08"/>
-      <stop offset="1" stop-color="var(--night)" stop-opacity="0"/>
-    </linearGradient>
-  </defs>
-
-  <rect width="{width}" height="{height}" class="bg"/>
-  <rect width="{width}" height="{height}" fill="url(#statsWash)"/>
-  <rect x="0.5" y="0.5" width="{width - 1}" height="{height - 1}" fill="none" stroke="var(--line)"/>
+{wash_defs(width, height, "statsWash", 0.08)}
+{panel_shell(width, height, "statsWash")}
 
   <g class="rise d1">
     {diamond(gutter + 2, y_eyebrow - 4)}
-    <text x="{gutter + 16}" y="{y_eyebrow}" class="font-mono" style="font-size:11px; fill: var(--acid)">01 / ACTIVITY</text>
+    <text x="{gutter + 16}" y="{y_eyebrow}" class="font-mono" style="font-size:11px; fill: var(--acid)">02 / ACTIVITY</text>
     <text x="{gutter}" y="{y_title}" class="font-display" style="font-size:28px">GITHUB ACTIVITY</text>
     <text x="{width - gutter}" y="{y_title}" text-anchor="end" class="font-mono" style="font-size:10px; fill: var(--muted)">UPDATED DAILY</text>
   </g>
@@ -618,9 +733,9 @@ def build_stats_svg():
 
 
 def build_repo_card_svg(repo, index):
-    width, height = 430, 170
+    width, height = 440, 180
     name = repo["name"]
-    desc_lines = wrap_text(repo.get("description"), 42, 2)
+    desc_lines = wrap_text(repo.get("description"), 40, 2)
     lang = (repo.get("primaryLanguage") or {}).get("name")
     lang_color = (repo.get("primaryLanguage") or {}).get("color") or "#c8f750"
     topics = [
@@ -639,15 +754,14 @@ def build_repo_card_svg(repo, index):
     x = 20
     for chip in chips[:3]:
         label = truncate(chip.upper(), 14)
-        # Approximate mono width at 9px + letter-spacing.
-        chip_w = max(42, 10 + len(label) * 7.2)
+        chip_w = max(46, 12 + len(label) * 7.8)
         if x + chip_w > width - 20:
             break
         chip_parts.append(
             f"""
-      <g transform="translate({x}, 112)">
-        <rect width="{chip_w:.1f}" height="20" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
-        <text x="{chip_w / 2:.1f}" y="13.5" text-anchor="middle" class="font-mono" style="font-size:9px; letter-spacing:0.12em; fill: var(--acid)">{esc(label)}</text>
+      <g transform="translate({x}, 118)">
+        <rect width="{chip_w:.1f}" height="22" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
+        <text x="{chip_w / 2:.1f}" y="15" text-anchor="middle" class="font-mono" style="font-size:10px; letter-spacing:0.12em; fill: var(--acid)">{esc(label)}</text>
       </g>"""
         )
         x += chip_w + 8
@@ -655,8 +769,8 @@ def build_repo_card_svg(repo, index):
     desc_svg = []
     for i, line in enumerate(desc_lines):
         desc_svg.append(
-            f'<text x="20" y="{78 + i * 16}" class="font-mono" '
-            f'style="font-size:11px; letter-spacing:0.08em; fill: var(--muted)">{esc(line)}</text>'
+            f'<text x="20" y="{82 + i * 17}" class="font-body" '
+            f'style="font-size:12px; fill: var(--muted)">{esc(line)}</text>'
         )
 
     idx = f"{index + 1:02d}"
@@ -686,13 +800,13 @@ def build_repo_card_svg(repo, index):
     {diamond(24, 28)}
     <text x="36" y="32" class="font-mono" style="font-size:10px; fill: var(--acid)">0{index + 1} / FEATURED</text>
     <circle cx="20" cy="58" r="4" fill="{lang_color}"/>
-    <text x="32" y="62" class="font-display" style="font-size:20px">{esc(truncate(name.upper(), 22))}</text>
+    <text x="32" y="63" class="font-display" style="font-size:22px">{esc(truncate(name.upper(), 20))}</text>
     {"".join(desc_svg)}
   </g>
 
   <g class="rise d4">
     {"".join(chip_parts)}
-    <text x="{width - 20}" y="152" text-anchor="end" class="font-mono" style="font-size:14px; letter-spacing:0; fill: var(--acid)">↗</text>
+    <text x="{width - 20}" y="160" text-anchor="end" class="font-mono" style="font-size:14px; letter-spacing:0; fill: var(--acid)">↗</text>
     <rect x="20" y="{height - 2}" width="{width - 40}" height="1" fill="var(--acid)" class="underline-grow" style="animation-delay:0.25s"/>
   </g>
 </svg>
@@ -720,30 +834,29 @@ def write_repo_cards(pinned_repos):
 
 
 def build_pinned_markdown(card_paths):
-    if not card_paths:
-        return ""
     lines = [
         "",
         '<div align="center">',
+        f'<img src="featured_heading.svg" alt="Featured repositories" width="880" />',
         "",
-        "### Featured repositories",
-        "",
-        "<table>",
     ]
-    for i in range(0, len(card_paths), 2):
-        lines.append("<tr>")
-        for repo, path in card_paths[i : i + 2]:
-            lines.append("<td width=\"50%\">")
-            lines.append(
-                f'<a href="{repo["url"]}">'
-                f'<img src="{path}" alt="{esc(repo["name"])} repository card" width="100%"/>'
-                f"</a>"
-            )
-            lines.append("</td>")
-        if len(card_paths[i : i + 2]) == 1:
-            lines.append("<td width=\"50%\"></td>")
-        lines.append("</tr>")
-    lines.extend(["</table>", "", "</div>", ""])
+    if card_paths:
+        lines.append("<table>")
+        for i in range(0, len(card_paths), 2):
+            lines.append("<tr>")
+            for repo, path in card_paths[i : i + 2]:
+                lines.append('<td width="50%">')
+                lines.append(
+                    f'<a href="{repo["url"]}">'
+                    f'<img src="{path}" alt="{esc(repo["name"])} repository card" width="100%"/>'
+                    f"</a>"
+                )
+                lines.append("</td>")
+            if len(card_paths[i : i + 2]) == 1:
+                lines.append('<td width="50%"></td>')
+            lines.append("</tr>")
+        lines.append("</table>")
+    lines.extend(["", "</div>", ""])
     return "\n".join(lines)
 
 
@@ -763,17 +876,23 @@ def sync_readme_pinned(pinned_md):
         f.write(updated)
 
 
-header_svg = build_header_svg()
-stats_svg = build_stats_svg()
+assets = {
+    "profile_header.svg": build_header_svg(),
+    "about.svg": build_about_svg(),
+    "github_stats.svg": build_stats_svg(),
+    "featured_heading.svg": build_featured_heading_svg(),
+    "footer_github.svg": build_footer_button_svg(
+        f"GITHUB.COM/{login.upper()}", "footerGithub"
+    ),
+    "footer_portfolio.svg": build_footer_button_svg("TETRAZERO.COM", "footerPortfolio"),
+}
 
-with open("profile_header.svg", "w", encoding="utf-8") as f:
-    f.write(header_svg)
-
-with open("github_stats.svg", "w", encoding="utf-8") as f:
-    f.write(stats_svg)
+for path, content in assets.items():
+    Path(path).write_text(content, encoding="utf-8")
+    print(f"  wrote {path}")
 
 print("Writing featured repository cards...")
 card_paths = write_repo_cards(pinned)
 sync_readme_pinned(build_pinned_markdown(card_paths))
 
-print("Successfully generated profile_header.svg, github_stats.svg, cards/, and synced README.md")
+print("Successfully generated all profile SVGs and synced README.md")
