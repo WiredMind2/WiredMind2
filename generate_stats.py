@@ -96,8 +96,6 @@ query($login: String!) {
           name
           description
           url
-          stargazerCount
-          forkCount
           primaryLanguage {
             name
             color
@@ -662,8 +660,6 @@ def build_repo_card_svg(repo, index):
         )
 
     idx = f"{index + 1:02d}"
-    stars = repo.get("stargazerCount", 0)
-    forks = repo.get("forkCount", 0)
 
     return f"""<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="repoTitle{idx} repoDesc{idx}">
   <title id="repoTitle{idx}">{esc(name)}</title>
@@ -696,7 +692,6 @@ def build_repo_card_svg(repo, index):
 
   <g class="rise d4">
     {"".join(chip_parts)}
-    <text x="20" y="152" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--muted)">★ {stars}  ·  FORKS {forks}</text>
     <text x="{width - 20}" y="152" text-anchor="end" class="font-mono" style="font-size:14px; letter-spacing:0; fill: var(--acid)">↗</text>
     <rect x="20" y="{height - 2}" width="{width - 40}" height="1" fill="var(--acid)" class="underline-grow" style="animation-delay:0.25s"/>
   </g>

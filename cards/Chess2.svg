@@ -125,7 +125,7 @@
         <rect width="42.0" height="20" fill="none" stroke="var(--acid)" stroke-opacity="0.45"/>
         <text x="21.0" y="13.5" text-anchor="middle" class="font-mono" style="font-size:9px; letter-spacing:0.12em; fill: var(--acid)">C++</text>
       </g>
-    <text x="20" y="152" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--muted)">★ 1  ·  FORKS 0</text>
+    <text x="20" y="152" class="font-mono" style="font-size:10px; letter-spacing:0.14em; fill: var(--muted)">★ 0  ·  FORKS 0</text>
     <text x="410" y="152" text-anchor="end" class="font-mono" style="font-size:14px; letter-spacing:0; fill: var(--acid)">↗</text>
     <rect x="20" y="168" width="390" height="1" fill="var(--acid)" class="underline-grow" style="animation-delay:0.25s"/>
   </g>
