@@ -31,7 +31,10 @@ jobs:
 
       - name: Generate Stats SVG
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Classic PAT (public_repo + read:user). The default GITHUB_TOKEN is a
+          # GitHub Actions installation token, which GitHub forbids from reading
+          # the GraphQL stargazers/languages fields, so it must not be used here.
+          GITHUB_TOKEN: ${{ secrets.STATS_TOKEN }}
           GITHUB_USERNAME: ${{ github.repository_owner }}
         run: python generate_stats.py
 
