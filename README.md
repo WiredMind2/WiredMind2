@@ -22,14 +22,6 @@
 </tr>
 <tr>
 <td width="50%">
-<a href="https://github.com/WiredMind2/AnimeManager"><img src="cards/AnimeManager.svg" alt="AnimeManager repository card" width="100%"/></a>
-</td>
-<td width="50%">
-<a href="https://github.com/WiredMind2/CompAIny"><img src="cards/CompAIny.svg" alt="CompAIny repository card" width="100%"/></a>
-</td>
-</tr>
-<tr>
-<td width="50%">
 <a href="https://github.com/WiredMind2/clusterfuzz"><img src="cards/clusterfuzz.svg" alt="clusterfuzz repository card" width="100%"/></a>
 </td>
 <td width="50%">
