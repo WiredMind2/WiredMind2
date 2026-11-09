@@ -15,19 +15,19 @@ load_dotenv()
 
 # Editable profile copy (rendered into SVGs, not README markdown).
 # Sourced from https://tetrazero.com — keep GitHub-facing and concise.
-TAGLINE = "CS ENGINEERING @ INSA LYON · CLASS OF 2027"
-ROLES = "CTO @ BUDDIMM · PRESIDENT @ INSALGO"
+TAGLINE = "CS ENGINEERING @ INSA LYON '27 · LEHIGH EXCHANGE '26"
+ROLES = "CTO @ BUDDIMM · SEEKING 6-MONTH INTERNSHIP · JAN 2027"
 ABOUT_LINES = [
     "I write code for work, for sport, and for fun.",
-    "Compilers, trading systems, three-player chess engines,",
-    "AI tooling, and contest software - all open source on GitHub.",
+    "Compilers, trading systems, and AI tooling - from agentic",
+    "workflows to low-level engineering. All open source on GitHub.",
 ]
 HIGHLIGHTS = [
-    "ICPC European Championship 2026 - 2nd France, 40th Europe",
-    "ICPC SWERC 2025 - 3rd in France · competing again at SWERC 2026",
+    "ICPC European Championship 2026 - 2nd in France, 40th of 53",
+    "ICPC SWERC 2025 - 3rd in France, 18th of 142 · SWERC 2026 upcoming",
     "Castor Informatique 1st among 500k+ participants",
     "4x Prologin finalist (2022-2025)",
-    "Match'Up Coding Battle winner · designs contests for INSAlgo",
+    "Match'Up 2022 winner, 1st of 2,000+ · problem setter",
 ]
 FOCUS = [
     "COMPILERS",
@@ -35,6 +35,18 @@ FOCUS = [
     "COMPETITIVE PROGRAMMING",
     "AI TOOLING",
     "SECURITY",
+]
+
+# Repos rendered in the FEATURED REPOSITORIES section, in display order.
+# The public GitHub API cannot manage pinned items, so this list drives the
+# cards directly; leave empty to fall back to the account's pinned items.
+FEATURED_REPOS = [
+    "C-Compiler",
+    "OpenTrade",
+    "AnimeManager",
+    "CompAIny",
+    "clusterfuzz",
+    "kev-control",
 ]
 
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN")
@@ -72,6 +84,24 @@ def run_query(query, variables):
     raise Exception(
         f"Query failed with status {request.status_code}: {request.text}"
     )
+
+
+def fetch_featured_repos(names):
+    """Fetch curated featured repos in list order (one alias per name)."""
+    if not names:
+        return []
+    aliases = []
+    for i, name in enumerate(names):
+        safe_name = name.replace('"', "")
+        aliases.append(
+            f'r{i}: repository(owner: $owner, name: "{safe_name}") '
+            "{ name description url primaryLanguage { name color } "
+            "repositoryTopics(first: 3) { nodes { topic { name } } } }"
+        )
+    featured_query = "query($owner: String!) { " + " ".join(aliases) + " }"
+    result = run_query(featured_query, {"owner": USERNAME})
+    root = result["data"]
+    return [root[f"r{i}"] for i, _ in enumerate(names) if root.get(f"r{i}")]
 
 
 query = """
@@ -207,7 +237,9 @@ for repo in repositories:
 
 total_size = sum(language_sizes.values()) or 1
 top_languages = sorted(language_sizes.items(), key=lambda x: x[1], reverse=True)[:6]
-pinned = [node for node in data["pinnedItems"]["nodes"] if node]
+pinned = fetch_featured_repos(FEATURED_REPOS) or [
+    node for node in data["pinnedItems"]["nodes"] if node
+]
 
 
 def esc(text):
@@ -485,7 +517,7 @@ def build_header_svg():
     <text x="40" y="98" class="font-display" style="font-size:{name_size}px">{esc(display_name)}</text>
     <text x="40" y="128" class="font-mono" style="font-size:12px; letter-spacing:0.12em; fill: var(--muted)">{esc(TAGLINE)}</text>
     <text x="40" y="152" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--acid)">{esc(ROLES)}</text>
-    <text x="40" y="176" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--muted)">COMPILERS · TRADING · CONTEST SOFTWARE</text>
+    <text x="40" y="176" class="font-mono" style="font-size:11px; letter-spacing:0.12em; fill: var(--muted)">COMPILERS · TRADING SYSTEMS · AI TOOLING · SECURITY</text>
     <text x="40" y="204" class="font-mono" style="font-size:11px; fill: var(--acid)">{followers} FOLLOWERS  ·  {total_contributions} CONTRIBUTIONS THIS YEAR</text>
   </g>
 </svg>
