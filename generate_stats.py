@@ -289,6 +289,23 @@ def sanitize_filename(name):
     return cleaned or "repo"
 
 
+def visible_lang_color(color, min_lum=0.10, blend=0.35):
+    """Lift language colors too dark for the graphite background toward ink."""
+    if not color or not color.startswith("#") or len(color) != 7:
+        return color
+    try:
+        channels = [int(color[i : i + 2], 16) for i in (1, 3, 5)]
+    except ValueError:
+        return color
+    lin = [c / 255 for c in channels]
+    lum = 0.2126 * lin[0] ** 2.2 + 0.7152 * lin[1] ** 2.2 + 0.0722 * lin[2] ** 2.2
+    if lum >= min_lum:
+        return color
+    ink = (0xe9, 0xe6, 0xe0)
+    mixed = [round(c + (i - c) * blend) for c, i in zip(channels, ink)]
+    return "#" + "".join(f"{c:02x}" for c in mixed)
+
+
 def quantile(sorted_vals, q):
     if not sorted_vals:
         return 0
@@ -319,7 +336,7 @@ def contribution_thresholds(weeks):
 
 
 CONTRIB_COLORS = {
-    0: "var(--raised)",
+    0: "#2e2b28",
     1: "#33291f",
     2: "#5c4530",
     3: "#8f6136",
@@ -725,7 +742,7 @@ def build_stats_svg():
     for i, (lang, size) in enumerate(top_languages):
         pct = (size / total_size) * 100
         bar_w = max(8, (pct / 100) * bar_max)
-        color = language_colors.get(lang, "#8f8b84")
+        color = visible_lang_color(language_colors.get(lang, "#8f8b84"))
         y = y_cols + i * row_h
         lang_parts.append(
             f"""
