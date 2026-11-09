@@ -673,7 +673,7 @@ def build_stats_svg():
     y_kpi = 108
     y_cols = 188
     row_h = 28
-    y_cal_label = y_cols + 6 * row_h + 36
+    y_cal_label = y_cols + len(overview) * row_h + 36
     y_months = y_cal_label + 18
     y_cal = y_months + 10
     y_legend = y_cal + 7 * (cell + gap) + 18
@@ -700,11 +700,8 @@ def build_stats_svg():
         )
 
     overview = [
-        ("STARS", total_stars),
         ("COMMITS (YEAR)", total_commits),
         ("PULL REQUESTS", total_prs),
-        ("ISSUES", total_issues),
-        ("CONTRIBUTED TO", total_contributed_to),
         ("REPOS CREATED", total_created),
     ]
     overview_parts = []
