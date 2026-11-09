@@ -320,10 +320,10 @@ def contribution_thresholds(weeks):
 
 CONTRIB_COLORS = {
     0: "var(--raised)",
-    1: "#3d4a1e",
-    2: "#6f8c2c",
-    3: "#a3cf3d",
-    4: "#c8f750",
+    1: "#33291f",
+    2: "#5c4530",
+    3: "#8f6136",
+    4: "#c8864e",
 }
 
 
@@ -341,15 +341,16 @@ def intensity_level(count, thresholds):
 
 
 SHARED_STYLE = """
+    /* Palette: warm graphite + machined copper (--acid is the copper accent). */
     :root {
-        --night: #08090b;
-        --surface: #0e1014;
-        --raised: #14171c;
-        --ink: #e8e6e1;
-        --muted: #8b919c;
-        --line: #20242b;
-        --acid: #c8f750;
-        --acid-dim: #8fb52e;
+        --night: #191817;
+        --surface: #1f1e1c;
+        --raised: #262421;
+        --ink: #e9e6e0;
+        --muted: #8f8b84;
+        --line: #2b2926;
+        --acid: #c8864e;
+        --acid-dim: #8f6136;
     }
 
     .font-display {
@@ -724,7 +725,7 @@ def build_stats_svg():
     for i, (lang, size) in enumerate(top_languages):
         pct = (size / total_size) * 100
         bar_w = max(8, (pct / 100) * bar_max)
-        color = language_colors.get(lang, "#8b919c")
+        color = language_colors.get(lang, "#8f8b84")
         y = y_cols + i * row_h
         lang_parts.append(
             f"""
@@ -812,7 +813,7 @@ def build_repo_card_svg(repo, index):
     name = repo["name"]
     desc_lines = wrap_text(repo.get("description"), 40, 2)
     lang = (repo.get("primaryLanguage") or {}).get("name")
-    lang_color = (repo.get("primaryLanguage") or {}).get("color") or "#c8f750"
+    lang_color = (repo.get("primaryLanguage") or {}).get("color") or "#c8864e"
     topics = [
         node["topic"]["name"]
         for node in (repo.get("repositoryTopics") or {}).get("nodes") or []
