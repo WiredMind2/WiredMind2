@@ -122,7 +122,7 @@
     <text x="40" y="68" class="font-display" style="font-size:28px">ABOUT</text>
   </g>
 
-  <text x="40" y="104" class="font-body rise d2" style="font-size:16px; fill: var(--ink)">I write code for work, for sport, and for fun.</text><text x="40" y="128" class="font-body rise d3" style="font-size:16px; fill: var(--ink)">Compilers, trading systems, three-player chess engines,</text><text x="40" y="152" class="font-body rise d4" style="font-size:16px; fill: var(--ink)">AI tooling, and contest software - all open source on GitHub.</text>
+  <text x="40" y="104" class="font-body rise d2" style="font-size:16px; fill: var(--ink)">I write code for work, for sport, and for fun.</text><text x="40" y="128" class="font-body rise d3" style="font-size:16px; fill: var(--ink)">Compilers, trading systems, and AI tooling - from agentic</text><text x="40" y="152" class="font-body rise d4" style="font-size:16px; fill: var(--ink)">workflows to low-level engineering. All open source on GitHub.</text>
 
   <g class="rise d3">
     <text x="40" y="206" class="font-mono" style="font-size:11px; fill: var(--acid)">COMPETITIVE TRACK</text>
@@ -131,13 +131,13 @@
       <g transform="translate(40, 232)">
         <g class="rise d4">
           <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
-          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">ICPC European Championship 2026 - 2nd France, 40th Europe</text>
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">ICPC European Championship 2026 - 2nd in France, 40th of 53</text>
         </g>
       </g>
       <g transform="translate(40, 258)">
         <g class="rise d5">
           <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
-          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">ICPC SWERC 2025 - 3rd in France · competing again at SWERC 2026</text>
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">ICPC SWERC 2025 - 3rd in France, 18th of 142 · SWERC 2026 upcoming</text>
         </g>
       </g>
       <g transform="translate(40, 284)">
@@ -155,7 +155,7 @@
       <g transform="translate(40, 336)">
         <g class="rise d8">
           <rect x="1.5" y="-6.5" width="5" height="5" fill="var(--acid)" transform="rotate(45 4 -4)"/>
-          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">Match'Up Coding Battle winner · designs contests for INSAlgo</text>
+          <text x="18" y="0" class="font-body" style="font-size:14px; fill: var(--muted)">Match'Up 2022 winner, 1st of 2,000+ · problem setter</text>
         </g>
       </g>
 

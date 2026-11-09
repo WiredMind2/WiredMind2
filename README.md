@@ -14,10 +14,10 @@
 <table>
 <tr>
 <td width="50%">
-<a href="https://github.com/WiredMind2/OpenTrade"><img src="cards/OpenTrade.svg" alt="OpenTrade repository card" width="100%"/></a>
+<a href="https://github.com/WiredMind2/C-Compiler"><img src="cards/C-Compiler.svg" alt="C-Compiler repository card" width="100%"/></a>
 </td>
 <td width="50%">
-<a href="https://github.com/WiredMind2/Chess2"><img src="cards/Chess2.svg" alt="Chess2 repository card" width="100%"/></a>
+<a href="https://github.com/WiredMind2/OpenTrade"><img src="cards/OpenTrade.svg" alt="OpenTrade repository card" width="100%"/></a>
 </td>
 </tr>
 <tr>
@@ -25,7 +25,15 @@
 <a href="https://github.com/WiredMind2/AnimeManager"><img src="cards/AnimeManager.svg" alt="AnimeManager repository card" width="100%"/></a>
 </td>
 <td width="50%">
-<a href="https://github.com/WiredMind2/C-Compiler"><img src="cards/C-Compiler.svg" alt="C-Compiler repository card" width="100%"/></a>
+<a href="https://github.com/WiredMind2/CompAIny"><img src="cards/CompAIny.svg" alt="CompAIny repository card" width="100%"/></a>
+</td>
+</tr>
+<tr>
+<td width="50%">
+<a href="https://github.com/WiredMind2/clusterfuzz"><img src="cards/clusterfuzz.svg" alt="clusterfuzz repository card" width="100%"/></a>
+</td>
+<td width="50%">
+<a href="https://github.com/WiredMind2/kev-control"><img src="cards/kev-control.svg" alt="kev-control repository card" width="100%"/></a>
 </td>
 </tr>
 </table>
