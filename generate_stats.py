@@ -43,8 +43,6 @@ FOCUS = [
 FEATURED_REPOS = [
     "C-Compiler",
     "OpenTrade",
-    "AnimeManager",
-    "CompAIny",
     "clusterfuzz",
     "kev-control",
 ]
