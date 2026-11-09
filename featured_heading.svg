@@ -2,15 +2,16 @@
   <title id="featuredTitle">Featured work</title>
   <style>
 
+    /* Palette: warm graphite + machined copper (--acid is the copper accent). */
     :root {
-        --night: #08090b;
-        --surface: #0e1014;
-        --raised: #14171c;
-        --ink: #e8e6e1;
-        --muted: #8b919c;
-        --line: #20242b;
-        --acid: #c8f750;
-        --acid-dim: #8fb52e;
+        --night: #191817;
+        --surface: #1f1e1c;
+        --raised: #262421;
+        --ink: #e9e6e0;
+        --muted: #8f8b84;
+        --line: #2b2926;
+        --acid: #c8864e;
+        --acid-dim: #8f6136;
     }
 
     .font-display {
