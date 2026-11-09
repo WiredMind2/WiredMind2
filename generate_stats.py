@@ -678,7 +678,8 @@ def build_stats_svg():
         ("PULL REQUESTS", total_prs),
         ("REPOS CREATED", total_created),
     ]
-    y_cal_label = y_cols + len(overview) * row_h + 36
+    n_table_rows = max(len(overview), len(top_languages))
+    y_cal_label = y_cols + n_table_rows * row_h + 36
     y_months = y_cal_label + 18
     y_cal = y_months + 10
     y_legend = y_cal + 7 * (cell + gap) + 18
